@@ -8,22 +8,12 @@
 
 ### 2. Deployment Links
 * **Website URL:** https://xuanye.site
-* **Deployment Video:** [INSERT LINK TO YOUR VIDEO HERE]
 
 ---
 
 ### 3. Access Credentials
 
-#### A. Basic Authentication (Website Access)
-To view the site, use these credentials when the popup appears:
-* **Username:** team_user
-* **Password:** TEAMSITE!!
-
-#### B. MySQL Database
-- Username: root
-- Password: CSE135MYSQL!!
-
-#### C. Server Access (SSH)
+#### A. Server Access (SSH)
 * **IP Address:** 165.232.48.207
 * **Username:** grader
 * **SSH Private Key:** see grader_key file
@@ -35,6 +25,15 @@ To view the site, use these credentials when the popup appears:
     # Connect
     ssh -i grader_key grader@165.232.48.207
     ```
+
+#### B. Website Access
+To view the site, use these credentials when the popup appears:
+* **Username:** team_user
+* **Password:** TEAMSITE!!
+
+#### C. MySQL Database
+- Username: root
+- Password: CSE135MYSQL!!
 
 ### 4. Technical Report
 
