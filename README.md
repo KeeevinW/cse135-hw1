@@ -16,7 +16,7 @@
 #### A. Server Access (SSH)
 * **IP Address:** 165.232.48.207
 * **Username:** grader
-* **SSH Private Key:** see grader_key file
+* **SSH Private Key:** see grader_key file (submitted via Gradescope)
 * There is no Passphrase
 * To log in to the server:
     ``` bash
