@@ -2,18 +2,119 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>About Kevin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Kevin | Team Xuanye</title>
     <style>
-        .bio { background: #f9f9f9; padding: 20px; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .profile-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #e1e4e8;
+        }
+
+        h1 {
+            margin: 0 0 0.5rem 0;
+            color: #2d3748;
+            font-size: 1.8rem;
+        }
+
+        .tagline {
+            color: #007bff; /* Primary Blue */
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: block;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bio {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .btn-linkedin {
+            background-color: #0077b5;
+            color: white;
+        }
+        .btn-linkedin:hover {
+            background-color: #005e93;
+            transform: translateY(-1px);
+        }
+
+        .back-link {
+            color: #6c757d;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+        }
+        .back-link:hover {
+            color: #333;
+        }
     </style>
 </head>
 <body>
-    <h1>About Kevin</h1>
-    <div class="bio">
-        <p>Hello! I am a student in CSE 135.</p>
-        <p>I set up this server using DigitalOcean.</p>
+
+    <div class="profile-card">
+
+        
+        <h1>Xuanye Wang</h1>
+
+
+        <div class="bio">
+            <p>Hello! I am a third-year student at UCSD (recently transferred from UCSB).</p>
+        </div>
+        
+        <div class="contact-links">
+            <a href="mailto:xuw040@ucsd.edu" class="btn btn-primary">Email Me</a>
+            <a href="https://www.linkedin.com/in/xuanye-wang-9387bb297/" target="_blank" class="btn btn-linkedin">LinkedIn</a>
+        </div>
+
+        <a href="/" class="back-link">← Back to Team Home</a>
     </div>
-    <button onclick="alert('Hello from JS!')">Click Me</button>
-    <p><a href="/">Back to Home</a></p>
+
 </body>
 </html>
