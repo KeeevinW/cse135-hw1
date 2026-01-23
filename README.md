@@ -8,6 +8,7 @@
 
 ### 2. Deployment Links
 * **Website URL:** https://xuanye.site
+* **Repository Link:** https://github.com/KeeevinW/cse135-hw1
 
 ---
 
