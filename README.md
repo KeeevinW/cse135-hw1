@@ -17,6 +17,7 @@
 * **IP Address:** 165.232.48.207
 * **Username:** grader
 * **SSH Private Key:** see grader_key file
+* There is no Passphrase
 * To log in to the server:
     ``` bash
     # Set permissions (Mac/Linux/WSL only)
