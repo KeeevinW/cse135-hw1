@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Team Xuanye - CSE 135</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    
+
     <style>
       :root {
         --primary: #007bff;
@@ -16,7 +16,8 @@
       }
 
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         background-color: var(--bg);
         color: var(--text);
         max-width: 900px;
@@ -57,13 +58,15 @@
         border: 1px solid #ddd;
         border-radius: 8px;
         padding: 1.5rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
       }
 
       .card:hover {
         transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       }
 
       .card h3 {
@@ -121,7 +124,6 @@
     </style>
   </head>
   <body>
-
     <script>
       var _paq = (window._paq = window._paq || []);
       _paq.push(["trackPageView"]);
@@ -139,61 +141,72 @@
       })();
     </script>
     <header>
-        <h1>Team Xuanye</h1>
-        <p class="subtitle">CSE 135</p>
+      <h1>Team Xuanye</h1>
+      <p class="subtitle">CSE 135</p>
     </header>
 
     <main>
-        <h2>Team Members</h2>
-        <div class="grid">
-            <div class="card">
-                <h3>Xuanye Wang</h3>
-                <a href="/members/kevin.html">View Portfolio &rarr;</a>
-            </div>
-            
-        </div>
-
-        <h2>Homework 1 - Client Side Basics, Site and Server Configuration
-Learning Outcomes
-</h2>
+      <h2>Team Members</h2>
+      <div class="grid">
         <div class="card">
-            <ul>
-                <li><a href="/hw1/hello.php">HW1: PHP Info Page</a></li>
-                <li><a href="/hw1/report.html">HW1: Analytics Report</a></li>
-            </ul>
+          <h3>Xuanye Wang</h3>
+          <a href="/members/kevin.html">View Portfolio &rarr;</a>
         </div>
+      </div>
 
-        <h2>Homework 2 - Server Side Basics</h2>
-        <div class="card">
-            <h3>Part 1: Perl Examples</h3>
-            <ul>
-                <li><a href="/cgi-bin/perl-hello-html-world.pl">Hello HTML</a></li>
-                <li><a href="/cgi-bin/perl-hello-json-world.pl">Hello JSON</a></li>
-                <li><a href="/cgi-bin/perl-env.pl">Environment Variables</a></li>
-                <li><a href="/cgi-bin/perl-get-echo.pl">Echo (GET)</a></li>
-                <li><a href="/cgi-bin/perl-post-echo.pl">Echo (POST)</a></li>
-                <li><a href="/cgi-bin/perl-sessions-1.pl">Session Page 1</a></li>
-                <li><a href="/cgi-bin/perl-sessions-2.pl">Session Page 2</a></li>
-            </ul>
-        </div>
+      <h2>
+        Homework 1 - Client Side Basics, Site and Server Configuration Learning
+        Outcomes
+      </h2>
+      <div class="card">
+        <ul>
+          <li><a href="/hw1/hello.php">HW1: PHP Info Page</a></li>
+          <li><a href="/hw1/report.html">HW1: Analytics Report</a></li>
+        </ul>
+      </div>
 
-        <h2>Matomo Analytics</h2>
-        <div class="analytics-box">
-            <p>Use the buttons below to interact with the tracking system.</p>
-            
-            <a href="//xuanye.site/matomo/" target="_blank" class="btn">
-                Open Matomo Dashboard
-            </a>
-        </div>
+      <h2>Homework 2 - Server Side Basics</h2>
+      <div class="card">
+        <h3>Part 1: Perl Examples</h3>
+        <ul>
+          <li><a href="/cgi-bin/perl-hello-html-world.pl">Hello HTML</a></li>
+          <li><a href="/cgi-bin/perl-hello-json-world.pl">Hello JSON</a></li>
+          <li><a href="/cgi-bin/perl-env.pl">Environment Variables</a></li>
+          <li><a href="/cgi-bin/perl-get-echo.pl">Echo (GET)</a></li>
+          <li><a href="/cgi-bin/perl-post-echo.pl">Echo (POST)</a></li>
+          <li><a href="/cgi-bin/perl-sessions-1.pl">Session Page 1</a></li>
+          <li><a href="/cgi-bin/perl-sessions-2.pl">Session Page 2</a></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Part 2: Python Examples</h3>
+        <ul>
+          <li><a href="/cgi-bin/python-hello-html-world.py">Hello HTML</a></li>
+          <li><a href="/cgi-bin/python-hello-json-world.py">Hello JSON</a></li>
+          <li><a href="/cgi-bin/python-env.py">Environment Variables</a></li>
+          <li><a href="/general-echo.html">Echo Form (Select Python)</a></li>
+          <li>
+            <a href="/cgi-bin/python-sessions-1.py">Session State (Page 1)</a>
+          </li>
+        </ul>
+      </div>
+
+      <h2>Matomo Analytics</h2>
+      <div class="analytics-box">
+        <p>Use the buttons below to interact with the tracking system.</p>
+
+        <a href="//xuanye.site/matomo/" target="_blank" class="btn">
+          Open Matomo Dashboard
+        </a>
+      </div>
     </main>
 
     <footer>
-        <p>
-            <a href="https://github.com/KeeevinW/cse135-hw1" target="_blank">
-                View Source Code on GitHub
-            </a>
-        </p>
+      <p>
+        <a href="https://github.com/KeeevinW/cse135-hw1" target="_blank">
+          View Source Code on GitHub
+        </a>
+      </p>
     </footer>
-
   </body>
 </html>
