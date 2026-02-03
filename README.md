@@ -39,7 +39,7 @@ To view the site, use these credentials when the popup appears:
 
 ### 4. Technical Report
 
-#### Part 2: GitHub Actions Deployment
+#### HW 1 Part 2: GitHub Actions Deployment
 I set up a CI/CD pipeline using GitHub Actions to automate deployment.
 
 1. I created a `.github/workflows/deploy.yml` file in the repository.
@@ -47,14 +47,14 @@ I set up a CI/CD pipeline using GitHub Actions to automate deployment.
 3. I generated a dedicated SSH Deploy Key. The public key was added to the server's `authorized_keys`, and the private key was stored securely in GitHub Repo Secrets (`SSH_PRIVATE_KEY`), along with the host IP.
 4. When code is pushed, GitHub launches a runner that uses `rsync` over SSH to synchronize the files from the GitHub repository directly to `/var/www/xuanye.site` on the DigitalOcean server.
 
-#### Part 3, Step 5: Compression (mod_deflate)
+#### HW 1 Part 3, Step 5: Compression (mod_deflate)
 Observation: After enabling mod_deflate and restarting Apache, I inspected the Network tab in Chrome DevTools.
 
 - I verified that the Content-Encoding header was set to gzip.
 
 - Result: The "Transferred" size of the HTML file (1.9kB) was smaller than the actual "Resource" size (4.3kB). This confirms that the server is compressing text files before sending them to the browser, which reduces bandwidth usage and speeds up page load times.
 
-#### Part 3, Step 6: Server Identity (Obscuring Headers)
+#### HW 1 Part 3, Step 6: Server Identity (Obscuring Headers)
 How it was achieved: Standard Apache configuration (`ServerTokens`) only allows hiding version numbers, not changing the name entirely. To achieve the requirement of changing the header to "CSE135 Server":
 
 1. I installed libapache2-mod-security2 (ModSecurity).
@@ -64,6 +64,9 @@ How it was achieved: Standard Apache configuration (`ServerTokens`) only allows 
 3. I configured ModSecurity with the directive `SecServerSignature "CSE135 Server"`.
 
 4. This forces the server to intercept the outgoing header and replace the string "Apache..." with "CSE135 Server".
+
+#### HW 2 Free Choice: Microsoft Clarity
+* **Discussion:** Clarity provides "Heatmaps" and "Scroll Maps," visualizing user behaviors. Unlike Google Analytics, which focuses on who visited, Clarity showed us how they behaved. Furthermore, it was easy to install.
 
 ### 6. Extra Credit: Analytics System (Matomo)
 
