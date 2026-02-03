@@ -10,7 +10,7 @@ func main() {
 	fmt.Print("Content-Type: application/json\n\n")
 
 	data := map[string]string{
-		"message":  "Hello Team Xuanye",
+		"message":  " Greetings from Xuanye!",
 		"language": "Go",
 		"time":     time.Now().String(),
 	}
