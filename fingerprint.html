@@ -3,35 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Fingerprint Extra Credit</title>
-    <style>
-        body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
-        .box { border: 1px solid #ccc; padding: 20px; border-radius: 8px; background: #f9f9f9; margin-top: 20px; }
-        button { padding: 10px 20px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
-        button.danger { background: #dc3545; }
-        code { background: #eee; padding: 2px 5px; border-radius: 3px; }
-    </style>
 </head>
 <body>
     <h1>Fingerprinting Demo</h1>
     <p>This demo uses browser attributes (fonts, screen size, etc.) to identify you even if you delete cookies.</p>
 
-    <div class="box">
-        <h3>1. Your Identity</h3>
-        <p><strong>Fingerprint Hash:</strong> <span id="fp-hash">Calculating...</span></p>
-        <p><strong>Server Session Data:</strong> <span id="server-data">Loading...</span></p>
-    </div>
+    <hr>
 
-    <div class="box">
-        <h3>2. Save Data (State)</h3>
-        <input type="text" id="user-input" placeholder="Enter your name or secret" style="padding: 10px; width: 60%;">
-        <button onclick="saveData()">Save to Server</button>
-    </div>
+    <h3>1. Your Identity</h3>
+    <p><strong>Fingerprint Hash:</strong> <span id="fp-hash">Calculating...</span></p>
+    <p><strong>Server Session Data:</strong> <span id="server-data">Loading...</span></p>
 
-    <div class="box">
-        <h3>3. Test It</h3>
-        <p>Click the button below to delete your session cookie. Normally, this would log you out. However, because we have your fingerprint, we will restore your data immediately on reload.</p>
-        <button class="danger" onclick="clearCookies()">Delete Cookies & Reload</button>
-    </div>
+    <hr>
+
+    <h3>2. Save Data (State)</h3>
+    <input type="text" id="user-input" placeholder="Enter your name or secret">
+    <button onclick="saveData()">Save to Server</button>
+
+    <hr>
+
+    <h3>3. Test It</h3>
+    <p>Click the button below to delete your session cookie. Because we have your fingerprint, your data will reappear immediately on reload.</p>
+    <button onclick="clearCookies()">Delete Cookies & Reload</button>
 
     <script>
       // Initialize the agent at application startup.

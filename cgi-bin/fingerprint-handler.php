@@ -1,9 +1,7 @@
 <?php
-// Standard CGI headers
 header("Content-Type: application/json");
 header("Cache-Control: no-cache");
 
-// Get the raw POST data
 $json = file_get_contents('php://input');
 $request = json_decode($json, true);
 
@@ -11,10 +9,8 @@ $action = $request['action'] ?? '';
 $fingerprint = $request['fp'] ?? '';
 $userData = $request['data'] ?? '';
 
-// File to store our "Database"
-$dbFile = '../fp_db.json'; 
+$dbFile = '../fp_db.json'; //the data would be stored here
 
-// Load existing DB
 $db = [];
 if (file_exists($dbFile)) {
     $db = json_decode(file_get_contents($dbFile), true);
@@ -23,7 +19,6 @@ if (file_exists($dbFile)) {
 $response = ["status" => "ok"];
 
 if ($action === 'save') {
-    // Map the fingerprint to the data
     $db[$fingerprint] = $userData;
     file_put_contents($dbFile, json_encode($db));
     $response["message"] = "Saved";
