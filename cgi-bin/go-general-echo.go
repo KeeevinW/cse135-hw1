@@ -15,6 +15,10 @@ func main() {
 
 		bodyBytes, _ := ioutil.ReadAll(r.Body)
 		bodyString := string(bodyBytes)
+		remoteIP := r.RemoteAddr
+		userAgent := r.UserAgent()
+		host := r.Host
+		dateTime := time.Now().Format(time.RFC1123)
 
 		fmt.Fprintf(w, `<!DOCTYPE html>
 <html><head><title>General Request Echo</title>
@@ -28,6 +32,7 @@ func main() {
 <p><b>User Agent:</b> %s</p>
 <p><b>Host:</b> %s</p>
 <p><b>Date/Time:</b> %s</p>
-</body></html>`, r.Proto, r.Method, r.URL.RawQuery, bodyString)
+</body></html>`, r.Proto, r.Method, r.URL.RawQuery, bodyString, 
+        remoteIP, userAgent, host, dateTime)
 	}))
 }
