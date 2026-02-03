@@ -1,4 +1,3 @@
-#!/usr/bin/php-cgi
 <?php
 // Standard CGI headers
 header("Content-Type: application/json");
