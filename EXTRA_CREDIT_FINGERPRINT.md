@@ -9,8 +9,8 @@ I created a custom endpoint `fingerprint-handler.php`. When a user enters data, 
 ## How to Verify
 1.  Go to the Fingerprint Demo page.
 2.  Enter a name and click "Save".
-3.  Click "Delete Cookies & Reload".
-4.  Notice that normally this would clear the form, but the name reappears automatically because the server recognized the browser's fingerprint.
+3.  Click "Delete Cookies Only," and the `PHPSESSID` in the DevTools is deleted.
+4.  Click "Reload Page," the `PHPSESSID` in the DevTools would be restored.
 
 ## Limitations I encountered
 During my development, I discovered that the calculation of Fingerprint Hash is strict, or "fragile." At first, I saved a value while the inspector is open (so that half of my screen is the web page and the other half is DevTools). It worked, but once I closed the DevTools, I found that my Fingerprint Hash was changed, and the value saved disappeared. So unless I opened the DevTools again or delete the record manually on my server, it will remain there permanently. Therefore in a real-world application, it would cause the unnecessary growth of storage size.
