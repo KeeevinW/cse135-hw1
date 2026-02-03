@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSE 135 Echo Form</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 20px auto; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; }
+        pre { background: #f4f4f4; padding: 10px; border: 1px solid #ddd; white-space: pre-wrap;}
+    </style>
+</head>
+<body>
+
+<h1>CSE 135 Echo Form</h1>
+
+<form id="echoForm" action="echo-php.php" method="POST">
+
+    <div class="form-group">
+        <label for="method">HTTP Method:</label>
+        <select id="method" name="method">
+            <option value="GET">GET</option>
+            <option value="POST" selected>POST</option>
+            <option value="PUT">PUT (JS Only)</option>
+            <option value="DELETE">DELETE (JS Only)</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="encoding">Data Encoding:</label>
+        <select id="encoding" name="encoding">
+            <option value="application/x-www-form-urlencoded">Form URL Encoded</option>
+            <option value="application/json">JSON (JS Only)</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="message">Message Data:</label>
+        <input type="text" id="message" name="message" value="Hello World" required>
+    </div>
+
+    <button type="submit">Send Request</button>
+</form>
+
+<hr>
+<h3>Server Response:</h3>
+<pre id="output">Waiting for submission...</pre>
+
+<script>
+    document.getElementById('echoForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const lang = document.getElementById('lang').value;
+        const method = document.getElementById('method').value;
+        const encoding = document.getElementById('encoding').value;
+        const message = document.getElementById('message').value;
+        const output = document.getElementById('output');
+
+        const endpoints = {
+            'php': 'echo-php.php',
+            'python': 'echo-python.py',
+            'go': 'echo-go.cgi',
+        };
+
+        let url = endpoints[lang];
+        let options = { 
+            method: method,
+            headers: {}
+        };
+
+        if (method === 'GET') {
+            url += `?message=${encodeURIComponent(message)}`;
+        } 
+
+        else {
+            if (encoding === 'application/json') {
+                options.headers['Content-Type'] = 'application/json';
+                options.body = JSON.stringify({ message: message });
+            } else {
+                options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+                options.body = `message=${encodeURIComponent(message)}`;
+            }
+        }
+
+        output.textContent = "Sending...";
+
+        fetch(url, options)
+            .then(response => response.text())
+            .then(text => {
+                output.innerHTML = text;
+            })
+            .catch(err => {
+                output.textContent = "Error: " + err;
+            });
+    });
+</script>
+
+</body>
+</html>

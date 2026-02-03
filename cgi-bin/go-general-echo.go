@@ -3,23 +3,27 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"os"
+	"net/http"
+	"net/http/cgi"
 )
 
 func main() {
-	fmt.Print("Content-Type: text/html\n\n")
-	fmt.Print("<html><body><h1>Go Echo</h1>")
+	cgi.Serve(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "no-cache")
+		w.Header().Set("Content-Type", "text/html")
 
-	fmt.Printf("<p><b>Method:</b> %s</p>", os.Getenv("REQUEST_METHOD"))
-	
-	// Read POST Body (Standard Input)
-	body, _ := ioutil.ReadAll(os.Stdin)
-	
-	fmt.Print("<h3>Body Data Received:</h3>")
-	if len(body) > 0 {
-		fmt.Printf("<pre>%s</pre>", string(body))
-	} else {
-		fmt.Print("<p>No body data received.</p>")
-	}
-	fmt.Print("</body></html>")
+		// Read Body
+		bodyBytes, _ := ioutil.ReadAll(r.Body)
+		bodyString := string(bodyBytes)
+
+		fmt.Fprintf(w, `<!DOCTYPE html>
+<html><head><title>General Request Echo</title>
+</head><body><h1 align="center">General Request Echo</h1>
+<hr>
+<p><b>HTTP Protocol:</b> %s</p>
+<p><b>HTTP Method:</b> %s</p>
+<p><b>Query String:</b> %s</p>
+<p><b>Message Body:</b> %s</p>
+</body></html>`, r.Proto, r.Method, r.URL.RawQuery, bodyString)
+	}))
 }

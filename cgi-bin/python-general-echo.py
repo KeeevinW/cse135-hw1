@@ -1,36 +1,26 @@
-#!/usr/bin/python3
-import cgi
-import cgitb
+#!/usr/bin/env python3
 import os
 import sys
 
-# Enable error reporting
-cgitb.enable()
+print("Cache-Control: no-cache")
+print("Content-type: text/html\n")
 
-print("Content-Type: text/html\n\n")
-print("<html><body><h1>Python Echo</h1>")
+print("""<!DOCTYPE html>
+<html><head><title>General Request Echo</title>
+</head><body><h1 align="center">General Request Echo</h1>
+<hr>""")
 
-# Print Request Details
-print(f"<p><b>Method:</b> {os.environ.get('REQUEST_METHOD')}</p>")
-print(f"<p><b>Protocol:</b> {os.environ.get('SERVER_PROTOCOL')}</p>")
+print(f"<p><b>HTTP Protocol:</b> {os.environ.get('SERVER_PROTOCOL', '')}</p>")
+print(f"<p><b>HTTP Method:</b> {os.environ.get('REQUEST_METHOD', '')}</p>")
+print(f"<p><b>Query String:</b> {os.environ.get('QUERY_STRING', '')}</p>")
 
-# Handle Form Data
-form = cgi.FieldStorage()
+# Read Message Body from Standard Input
+try:
+    content_length = int(os.environ.get('CONTENT_LENGTH', 0))
+except (ValueError, TypeError):
+    content_length = 0
 
-print("<h3>Form Data Received:</h3><ul>")
-if form.keys():
-    for key in form.keys():
-        print(f"<li><b>{key}:</b> {form.getvalue(key)}</li>")
-else:
-    print("<li>No data received (or JSON body sent - Python CGI needs extra logic for raw JSON)</li>")
-print("</ul>")
+body = sys.stdin.read(content_length)
 
-# Handle Raw JSON Input (if sent as application/json)
-if os.environ.get("CONTENT_TYPE") == "application/json":
-    try:
-        raw_data = sys.stdin.read()
-        print(f"<h3>Raw JSON Body:</h3><pre>{raw_data}</pre>")
-    except:
-        pass
-
+print(f"<p><b>Message Body:</b> {body}</p>")
 print("</body></html>")
