@@ -9,7 +9,6 @@ if(isset($_SESSION['username'])) {
 <html>
 <head>
     <title>PHP Session 1</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
 </head>
 <body class="container mt-5">
     <h1>PHP Session Setup</h1>
@@ -18,7 +17,7 @@ if(isset($_SESSION['username'])) {
             <label>Enter your Name to Save in Session:</label>
             <input type="text" name="username" class="form-control" required>
         </div>
-        <button type="submit" class="btn btn-primary">Save Session</button>
+        <button type="submit">Save Session</button>
     </form>
 </body>
 </html>
