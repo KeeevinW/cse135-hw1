@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JR58L8K6VC"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -41,7 +40,7 @@
           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         background-color: var(--bg);
         color: var(--text);
-        max-width: 900px;
+        max-width: 1000px; /* Widened slightly to fit 4 columns better */
         margin: 0 auto;
         padding: 2rem 1rem;
         line-height: 1.6;
@@ -94,6 +93,40 @@
       .card h3 {
         margin-top: 0;
         color: var(--primary-dark);
+        font-size: 1.1rem;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+      }
+
+      /* NEW STYLE FOR HW2 PARALLEL LAYOUT */
+      .parallel-grid {
+        display: grid;
+        /* Creates 4 equal columns */
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 1.5rem;
+      }
+      
+      .parallel-grid ul {
+        padding-left: 1.2rem;
+        margin: 0;
+      }
+      
+      .parallel-grid li {
+        margin-bottom: 0.2rem;
+        font-size: 0.95rem;
+      }
+
+      /* Make it stack on smaller screens */
+      @media (max-width: 768px) {
+        .parallel-grid {
+            grid-template-columns: 1fr 1fr; /* 2 columns on tablet */
+        }
+      }
+      @media (max-width: 500px) {
+        .parallel-grid {
+            grid-template-columns: 1fr; /* 1 column on mobile */
+        }
       }
 
       /* Link Styling */
@@ -179,8 +212,7 @@
       </div>
 
       <h2>
-        Homework 1 - Client Side Basics, Site and Server Configuration Learning
-        Outcomes
+        Homework 1 - Client Side Basics
       </h2>
       <div class="card">
         <ul>
@@ -197,52 +229,61 @@
       </div>
 
       <div class="card">
-        <h3>Part 1: Perl Examples</h3>
-        <ul>
-          <li><a href="/cgi-bin/perl-hello-html-world.pl">Hello HTML</a></li>
-          <li><a href="/cgi-bin/perl-hello-json-world.pl">Hello JSON</a></li>
-          <li><a href="/cgi-bin/perl-env.pl">Environment Variables</a></li>
-          <li><a href="/cgi-bin/perl-get-echo.pl">Echo (GET)</a></li>
-          <li><a href="/cgi-bin/perl-post-echo.pl">Echo (POST)</a></li>
-          <li><a href="/cgi-bin/perl-general-echo.pl">Echo (General)</a></li>
-          <li><a href="/cgi-bin/perl-sessions-1.pl">Sessioning</a></li>
+        <div class="parallel-grid">
+            
+            <div>
+                <h3>Perl</h3>
+                <ul>
+                    <li><a href="/cgi-bin/perl-hello-html-world.pl">Hello HTML</a></li>
+                    <li><a href="/cgi-bin/perl-hello-json-world.pl">Hello JSON</a></li>
+                    <li><a href="/cgi-bin/perl-env.pl">Env Vars</a></li>
+                    <li><a href="/cgi-bin/perl-get-echo.pl">GET Echo</a></li>
+                    <li><a href="/cgi-bin/perl-post-echo.pl">POST Echo</a></li>
+                    <li><a href="/cgi-bin/perl-general-echo.pl">General Echo</a></li>
+                    <li><a href="/cgi-bin/perl-sessions-1.pl">Sessioning</a></li>
+                </ul>
+            </div>
 
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Part 2: Python Examples</h3>
-        <ul>
-          <li><a href="/cgi-bin/python-hello-html-world.py">Hello HTML</a></li>
-          <li><a href="/cgi-bin/python-hello-json-world.py">Hello JSON</a></li>
-          <li><a href="/cgi-bin/python-env.py">Environment Variables</a></li>
-          <li><a href="/cgi-bin/python-general-echo.py">General Echo</a></li>
-          <li><a href="/cgi-bin/python-get-echo.py">GET Echo</a></li>
-          <li><a href="/cgi-bin/python-post-echo.py">POST Echo</a></li>
-          <li><a href="/cgi-bin/python-sessions-1.py">Sessioning</a></li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Part 3: PHP Examples</h3>
-        <ul>
-          <li><a href="/cgi-bin/php-hello-html-world.php">Hello HTML</a></li>
-          <li><a href="/cgi-bin/php-hello-json-world.php">Hello JSON</a></li>
-          <li><a href="/cgi-bin/php-env.php">Environment Variables</a></li>
-          <li><a href="/cgi-bin/php-general-echo.php">General Echo</a></li>
-          <li><a href="/cgi-bin/php-get-echo.php">GET Echo</a></li>
-          <li><a href="/cgi-bin/php-post-echo.php">POST Echo</a></li>
-          <li><a href="/cgi-bin/php-sessions-1.php">Sessioning</a></li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Part 4 Go Examples</h3>
-        <ul>
-          <li><a href="/cgi-bin/go-hello-html-world.cgi">Hello HTML</a></li>
-          <li><a href="/cgi-bin/go-hello-json-world.cgi">Hello JSON</a></li>
-          <li><a href="/cgi-bin/go-env.cgi">Environment Variables</a></li>
-          <li><a href="/cgi-bin/go-general-echo.cgi">General Echo</a></li>
-          <li><a href="/cgi-bin/go-get-echo.cgi">GET Echo</a></li>
-          <li><a href="/cgi-bin/go-post-echo.cgi">POST Echo</a></li>
-          <li><a href="/cgi-bin/go-sessions-1.cgi">Sessioning</a></li>
+            <div>
+                <h3>Python</h3>
+                <ul>
+                    <li><a href="/cgi-bin/python-hello-html-world.py">Hello HTML</a></li>
+                    <li><a href="/cgi-bin/python-hello-json-world.py">Hello JSON</a></li>
+                    <li><a href="/cgi-bin/python-env.py">Env Vars</a></li>
+                    <li><a href="/cgi-bin/python-general-echo.py">General Echo</a></li>
+                    <li><a href="/cgi-bin/python-get-echo.py">GET Echo</a></li>
+                    <li><a href="/cgi-bin/python-post-echo.py">POST Echo</a></li>
+                    <li><a href="/cgi-bin/python-sessions-1.py">Sessioning</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3>PHP</h3>
+                <ul>
+                    <li><a href="/cgi-bin/php-hello-html-world.php">Hello HTML</a></li>
+                    <li><a href="/cgi-bin/php-hello-json-world.php">Hello JSON</a></li>
+                    <li><a href="/cgi-bin/php-env.php">Env Vars</a></li>
+                    <li><a href="/cgi-bin/php-general-echo.php">General Echo</a></li>
+                    <li><a href="/cgi-bin/php-get-echo.php">GET Echo</a></li>
+                    <li><a href="/cgi-bin/php-post-echo.php">POST Echo</a></li>
+                    <li><a href="/cgi-bin/php-sessions-1.php">Sessioning</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3>Go</h3>
+                <ul>
+                    <li><a href="/cgi-bin/go-hello-html-world.cgi">Hello HTML</a></li>
+                    <li><a href="/cgi-bin/go-hello-json-world.cgi">Hello JSON</a></li>
+                    <li><a href="/cgi-bin/go-env.cgi">Env Vars</a></li>
+                    <li><a href="/cgi-bin/go-general-echo.cgi">General Echo</a></li>
+                    <li><a href="/cgi-bin/go-get-echo.cgi">GET Echo</a></li>
+                    <li><a href="/cgi-bin/go-post-echo.cgi">POST Echo</a></li>
+                    <li><a href="/cgi-bin/go-sessions-1.cgi">Sessioning</a></li>
+                </ul>
+            </div>
+
+        </div>
       </div>
 
       <h2>Matomo Analytics</h2>
