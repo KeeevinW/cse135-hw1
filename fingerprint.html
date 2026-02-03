@@ -10,21 +10,30 @@
 
     <hr>
 
-    <h3>1. Your Identity</h3>
-    <p><strong>Fingerprint Hash:</strong> <span id="fp-hash">Calculating...</span></p>
-    <p><strong>Server Session Data:</strong> <span id="server-data">Loading...</span></p>
+    <div class="step-box">
+        <h3>Your Identity</h3>
+        <p><strong>Fingerprint Hash:</strong> <span id="fp-hash" style="color:blue; font-family: monospace;">Calculating...</span></p>
+        <p><strong>Server Session Data:</strong> <span id="server-data" style="font-weight: bold;">Loading...</span></p>
+    </div>
 
-    <hr>
+    <div class="step-box">
+        <h3>Save Data (State)</h3>
+        <input type="text" id="user-input" placeholder="Enter your name or secret">
+        <button onclick="saveData()">Save to Server</button>
+    </div>
 
-    <h3>2. Save Data (State)</h3>
-    <input type="text" id="user-input" placeholder="Enter your name or secret">
-    <button onclick="saveData()">Save to Server</button>
+    <div class="step-box" style="border-left: 5px">
+        <h3>Test It</h3>
+        
+        <p><strong>Step A:</strong> Delete the session cookie. The browser now "forgets" who you are via standard methods.</p>
+        <button onclick="deleteCookiesOnly()">Delete Cookies Only</button>
+        <span id="cookie-status" style="color: green; margin-left: 10px;"></span>
 
-    <hr>
+        <br><br>
 
-    <h3>3. Test It</h3>
-    <p>Click the button below to delete your session cookie. But data will reappear immediately opon reload becasue the fingerprint remains the same.</p>
-    <button onclick="clearCookies()">Delete Cookies & Reload</button>
+        <p><strong>Step B:</strong> Reload the page. The data will reappear because the fingerprint remains the same.</p>
+        <button onclick="window.location.reload()">Reload Page</button>
+    </div>
 
     <script>
       // Initialize the agent at application startup.
@@ -54,7 +63,8 @@
               if(data.savedData) {
                   document.getElementById('user-input').value = data.savedData;
               }
-          });
+          })
+          .catch(err => console.error("Server Error:", err));
       }
 
       function saveData() {
@@ -73,11 +83,14 @@
           });
       }
 
-      function clearCookies() {
+      function deleteCookiesOnly() {
           document.cookie.split(";").forEach(function(c) { 
             document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
           });
-          location.reload();
+          
+          alert("Cookies deleted! \n\nThe browser has now lost the session cookie.\nClick 'Reload' to see if the Fingerprint restores the data.");
+          
+          document.getElementById('cookie-status').textContent = "Cookies deleted! Ready to reload.";
       }
     </script>
 </body>
