@@ -1,24 +1,41 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JR58L8K6VC"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-JR58L8K6VC"
+    ></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-    gtag('config', 'G-JR58L8K6VC');
+      gtag("config", "G-JR58L8K6VC");
     </script>
 
-    <script src="https://cdn.logr-in.com/LogRocket.min.js" crossorigin="anonymous"></script>
-    <script>window.LogRocket && window.LogRocket.init('btev7e/xuanyesite');</script>
+    <script
+      src="https://cdn.logr-in.com/LogRocket.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      window.LogRocket && window.LogRocket.init("btev7e/xuanyesite");
+    </script>
 
     <script type="text/javascript">
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "vagibgxe2z");
+      (function (c, l, a, r, i, t, y) {
+        c[a] =
+          c[a] ||
+          function () {
+            (c[a].q = c[a].q || []).push(arguments);
+          };
+        t = l.createElement(r);
+        t.async = 1;
+        t.src = "https://www.clarity.ms/tag/" + i;
+        y = l.getElementsByTagName(r)[0];
+        y.parentNode.insertBefore(t, y);
+      })(window, document, "clarity", "script", "vagibgxe2z");
     </script>
 
     <meta charset="UTF-8" />
@@ -99,37 +116,33 @@
         margin-bottom: 10px;
       }
 
-      /* NEW STYLE FOR HW2 PARALLEL LAYOUT */
       .parallel-grid {
         display: grid;
-        /* Creates 4 equal columns */
-        grid-template-columns: repeat(4, 1fr); 
+        grid-template-columns: repeat(4, 1fr);
         gap: 1.5rem;
       }
-      
+
       .parallel-grid ul {
         padding-left: 1.2rem;
         margin: 0;
       }
-      
+
       .parallel-grid li {
         margin-bottom: 0.2rem;
         font-size: 0.95rem;
       }
 
-      /* Make it stack on smaller screens */
       @media (max-width: 768px) {
         .parallel-grid {
-            grid-template-columns: 1fr 1fr; /* 2 columns on tablet */
+          grid-template-columns: 1fr 1fr;
         }
       }
       @media (max-width: 500px) {
         .parallel-grid {
-            grid-template-columns: 1fr; /* 1 column on mobile */
+          grid-template-columns: 1fr;
         }
       }
 
-      /* Link Styling */
       a {
         color: var(--primary);
         text-decoration: none;
@@ -178,7 +191,6 @@
       }
     </style>
   </head>
-  
 
   <body>
     <script>
@@ -211,9 +223,7 @@
         </div>
       </div>
 
-      <h2>
-        Homework 1 - Client Side Basics
-      </h2>
+      <h2>Homework 1 - Client Side Basics</h2>
       <div class="card">
         <ul>
           <li><a href="/hw1/hello.php">HW1: PHP Info Page</a></li>
@@ -223,67 +233,89 @@
 
       <h2>Homework 2 - Server Side Basics</h2>
 
-      <div class="card" style="border-left: 5px solid #007bff; background-color: #f0f8ff;">
+      <div
+        class="card"
+        style="border-left: 5px solid #007bff; background-color: #f0f8ff"
+      >
         <h3>Echo Form</h3>
         <a href="/echo-form.html" class="btn">Echo Form &rarr;</a>
       </div>
 
       <div class="card">
         <div class="parallel-grid">
-            
-            <div>
-                <h3>Perl</h3>
-                <ul>
-                    <li><a href="/cgi-bin/perl-hello-html-world.pl">Hello HTML</a></li>
-                    <li><a href="/cgi-bin/perl-hello-json-world.pl">Hello JSON</a></li>
-                    <li><a href="/cgi-bin/perl-env.pl">Env Vars</a></li>
-                    <li><a href="/cgi-bin/perl-get-echo.pl">GET Echo</a></li>
-                    <li><a href="/cgi-bin/perl-post-echo.pl">POST Echo</a></li>
-                    <li><a href="/cgi-bin/perl-general-echo.pl">General Echo</a></li>
-                    <li><a href="/cgi-bin/perl-sessions-1.pl">Sessioning</a></li>
-                </ul>
-            </div>
+          <div>
+            <h3>Perl</h3>
+            <ul>
+              <li>
+                <a href="/cgi-bin/perl-hello-html-world.pl">Hello HTML</a>
+              </li>
+              <li>
+                <a href="/cgi-bin/perl-hello-json-world.pl">Hello JSON</a>
+              </li>
+              <li><a href="/cgi-bin/perl-env.pl">Env Vars</a></li>
+              <li><a href="/cgi-bin/perl-get-echo.pl">GET Echo</a></li>
+              <li><a href="/cgi-bin/perl-post-echo.pl">POST Echo</a></li>
+              <li><a href="/cgi-bin/perl-general-echo.pl">General Echo</a></li>
+              <li><a href="/cgi-bin/perl-sessions-1.pl">Sessioning</a></li>
+            </ul>
+          </div>
 
-            <div>
-                <h3>Python</h3>
-                <ul>
-                    <li><a href="/cgi-bin/python-hello-html-world.py">Hello HTML</a></li>
-                    <li><a href="/cgi-bin/python-hello-json-world.py">Hello JSON</a></li>
-                    <li><a href="/cgi-bin/python-env.py">Env Vars</a></li>
-                    <li><a href="/cgi-bin/python-general-echo.py">General Echo</a></li>
-                    <li><a href="/cgi-bin/python-get-echo.py">GET Echo</a></li>
-                    <li><a href="/cgi-bin/python-post-echo.py">POST Echo</a></li>
-                    <li><a href="/cgi-bin/python-sessions-1.py">Sessioning</a></li>
-                </ul>
-            </div>
+          <div>
+            <h3>Python</h3>
+            <ul>
+              <li>
+                <a href="/cgi-bin/python-hello-html-world.py">Hello HTML</a>
+              </li>
+              <li>
+                <a href="/cgi-bin/python-hello-json-world.py">Hello JSON</a>
+              </li>
+              <li><a href="/cgi-bin/python-env.py">Env Vars</a></li>
+              <li>
+                <a href="/cgi-bin/python-general-echo.py">General Echo</a>
+              </li>
+              <li><a href="/cgi-bin/python-get-echo.py">GET Echo</a></li>
+              <li><a href="/cgi-bin/python-post-echo.py">POST Echo</a></li>
+              <li><a href="/cgi-bin/python-sessions-1.py">Sessioning</a></li>
+            </ul>
+          </div>
 
-            <div>
-                <h3>PHP</h3>
-                <ul>
-                    <li><a href="/cgi-bin/php-hello-html-world.php">Hello HTML</a></li>
-                    <li><a href="/cgi-bin/php-hello-json-world.php">Hello JSON</a></li>
-                    <li><a href="/cgi-bin/php-env.php">Env Vars</a></li>
-                    <li><a href="/cgi-bin/php-general-echo.php">General Echo</a></li>
-                    <li><a href="/cgi-bin/php-get-echo.php">GET Echo</a></li>
-                    <li><a href="/cgi-bin/php-post-echo.php">POST Echo</a></li>
-                    <li><a href="/cgi-bin/php-sessions-1.php">Sessioning</a></li>
-                </ul>
-            </div>
+          <div>
+            <h3>PHP</h3>
+            <ul>
+              <li>
+                <a href="/cgi-bin/php-hello-html-world.php">Hello HTML</a>
+              </li>
+              <li>
+                <a href="/cgi-bin/php-hello-json-world.php">Hello JSON</a>
+              </li>
+              <li><a href="/cgi-bin/php-env.php">Env Vars</a></li>
+              <li><a href="/cgi-bin/php-general-echo.php">General Echo</a></li>
+              <li><a href="/cgi-bin/php-get-echo.php">GET Echo</a></li>
+              <li><a href="/cgi-bin/php-post-echo.php">POST Echo</a></li>
+              <li><a href="/cgi-bin/php-sessions-1.php">Sessioning</a></li>
+            </ul>
+          </div>
 
-            <div>
-                <h3>Go</h3>
-                <ul>
-                    <li><a href="/cgi-bin/go-hello-html-world.cgi">Hello HTML</a></li>
-                    <li><a href="/cgi-bin/go-hello-json-world.cgi">Hello JSON</a></li>
-                    <li><a href="/cgi-bin/go-env.cgi">Env Vars</a></li>
-                    <li><a href="/cgi-bin/go-general-echo.cgi">General Echo</a></li>
-                    <li><a href="/cgi-bin/go-get-echo.cgi">GET Echo</a></li>
-                    <li><a href="/cgi-bin/go-post-echo.cgi">POST Echo</a></li>
-                    <li><a href="/cgi-bin/go-sessions-1.cgi">Sessioning</a></li>
-                </ul>
-            </div>
-
+          <div>
+            <h3>Go</h3>
+            <ul>
+              <li><a href="/cgi-bin/go-hello-html-world.cgi">Hello HTML</a></li>
+              <li><a href="/cgi-bin/go-hello-json-world.cgi">Hello JSON</a></li>
+              <li><a href="/cgi-bin/go-env.cgi">Env Vars</a></li>
+              <li><a href="/cgi-bin/go-general-echo.cgi">General Echo</a></li>
+              <li><a href="/cgi-bin/go-get-echo.cgi">GET Echo</a></li>
+              <li><a href="/cgi-bin/go-post-echo.cgi">POST Echo</a></li>
+              <li><a href="/cgi-bin/go-sessions-1.cgi">Sessioning</a></li>
+            </ul>
+          </div>
         </div>
+      </div>
+
+      <div class="card" style="border-left: 5px solid #28a745">
+        <h3>Extra Credit</h3>
+        <ul>
+          <li><a href="/fingerprint.html">Fingerprinting Demo</a></li>
+        </ul>
       </div>
 
       <h2>Matomo Analytics</h2>
