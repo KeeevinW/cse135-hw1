@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import sys
+import datetime
 
 print("Cache-Control: no-cache")
 print("Content-type: text/html\n")
@@ -23,4 +24,10 @@ except (ValueError, TypeError):
 body = sys.stdin.read(content_length)
 
 print(f"<p><b>Message Body:</b> {body}</p>")
+
+print(f"<p><b>Remote IP:</b> {os.environ.get('REMOTE_ADDR', '')}</p>")
+print(f"<p><b>User Agent:</b> {os.environ.get('HTTP_USER_AGENT', '')}</p>")
+print(f"<p><b>Host:</b> {os.environ.get('HTTP_HOST', '')}</p>")
+print(f"<p><b>Date/Time:</b> {str(datetime.datetime.now())}</p>")
+
 print("</body></html>")

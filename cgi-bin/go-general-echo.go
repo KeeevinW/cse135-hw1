@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/cgi"
+	"time"
 )
 
 func main() {
@@ -12,7 +13,6 @@ func main() {
 		w.Header().Set("Cache-Control", "no-cache")
 		w.Header().Set("Content-Type", "text/html")
 
-		// Read Body
 		bodyBytes, _ := ioutil.ReadAll(r.Body)
 		bodyString := string(bodyBytes)
 
@@ -24,6 +24,10 @@ func main() {
 <p><b>HTTP Method:</b> %s</p>
 <p><b>Query String:</b> %s</p>
 <p><b>Message Body:</b> %s</p>
+<p><b>Remote IP:</b> %s</p>
+<p><b>User Agent:</b> %s</p>
+<p><b>Host:</b> %s</p>
+<p><b>Date/Time:</b> %s</p>
 </body></html>`, r.Proto, r.Method, r.URL.RawQuery, bodyString)
 	}))
 }

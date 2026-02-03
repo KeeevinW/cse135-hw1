@@ -14,7 +14,7 @@
 
 <h1>CSE 135 Echo Form</h1>
 
-<form id="echoForm" action="echo-php.php" method="POST">
+<form id="echoForm" action="cgi-bin/php-general-echo.php" method="POST">
     
     <div class="form-group">
         <label for="lang">Target Language:</label>
@@ -53,7 +53,7 @@
 
 <hr>
 <h3>Server Response:</h3>
-<pre id="output">Waiting for submission...</pre>
+<div id="output" style="background: #f4f4f4; padding: 10px; border: 1px solid #ddd;">Waiting for submission...</div>
 
 <script>
     document.getElementById('echoForm').addEventListener('submit', function(e) {
