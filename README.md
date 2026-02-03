@@ -68,7 +68,7 @@ How it was achieved: Standard Apache configuration (`ServerTokens`) only allows 
 #### HW 2 Free Choice: Microsoft Clarity
 * **Discussion:** Clarity provides "Heatmaps" and "Scroll Maps," visualizing user behaviors. Unlike Google Analytics, which focuses on who visited, Clarity showed us how they behaved. Furthermore, it was easy to install.
 
-### 6. Extra Credit: Analytics System (Matomo)
+### 6. HW 1 Extra Credit: Analytics System (Matomo)
 
 **Installation Process:**
 1.  Installed required PHP extensions (`php-xml`, `php-mbstring`, `php-gd`, `php-curl`) on the LAMP stack.
