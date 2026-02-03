@@ -2,7 +2,6 @@
 import os
 import http.cookies
 
-# Check if user already has a session
 cookie_string = os.environ.get('HTTP_COOKIE')
 session_active = False
 
@@ -11,7 +10,6 @@ if cookie_string:
     cookie.load(cookie_string)
     if 'CGISESSID' in cookie:
         sess_id = cookie['CGISESSID'].value
-        # Check if file exists in tmp
         if os.path.exists('/tmp/sess_' + sess_id):
             session_active = True
 

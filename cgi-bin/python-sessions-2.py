@@ -14,13 +14,11 @@ cookie = http.cookies.SimpleCookie()
 session_id = None
 cookie_string = os.environ.get('HTTP_COOKIE')
 
-# 1. LOAD SESSION ID from Cookie
 if cookie_string:
     cookie.load(cookie_string)
     if 'CGISESSID' in cookie:
         session_id = cookie['CGISESSID'].value
 
-# 2. HANDLE DESTROY
 if destroy:
     if session_id and os.path.exists(f'/tmp/sess_{session_id}'):
         os.remove(f'/tmp/sess_{session_id}')
@@ -29,7 +27,6 @@ if destroy:
     print("<html><body>Session Destroyed. <a href='python-sessions-1.py'>Back</a></body></html>")
     exit()
 
-# 3. HANDLE NEW LOGIN
 if username:
     # Generate new ID
     session_id = str(uuid.uuid4())
@@ -39,7 +36,6 @@ if username:
     # Set Cookie Header (Must happen before Content-Type)
     print(f"Set-Cookie: CGISESSID={session_id}; path=/")
 
-# 4. READ SESSION DATA
 stored_name = "Unknown"
 if session_id and os.path.exists(f'/tmp/sess_{session_id}'):
     with open(f'/tmp/sess_{session_id}', 'r') as f:
