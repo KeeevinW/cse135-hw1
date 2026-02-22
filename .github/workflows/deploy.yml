@@ -11,13 +11,24 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Deploy to Server via Rsync
+    - name: Deploy Main Site
       uses: easingthemes/ssh-deploy@main
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         ARGS: "-rlptDzvc -i"
-        SOURCE: "/"
+        SOURCE: "main-site/"
         REMOTE_HOST: ${{ secrets.SSH_HOST }}
         REMOTE_USER: "kevin"
         TARGET: "/var/www/xuanye.site/"
+        EXCLUDE: "/dist/, /node_modules/"
+
+    - name: Deploy Test Site
+      uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        ARGS: "-rlptDzvc -i"
+        SOURCE: "test-site/"
+        REMOTE_HOST: ${{ secrets.SSH_HOST }}
+        REMOTE_USER: "kevin"
+        TARGET: "/var/www/test.xuanye.site/"
         EXCLUDE: "/dist/, /node_modules/"
