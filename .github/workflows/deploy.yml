@@ -32,3 +32,14 @@ jobs:
         REMOTE_USER: "kevin"
         TARGET: "/var/www/test.xuanye.site/"
         EXCLUDE: "/dist/, /node_modules/"
+    
+    - name: Deploy Collector Site
+      uses: easingthemes/ssh-deploy@main
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        ARGS: "-rlptDzvc -i"
+        SOURCE: "collector-site/"
+        REMOTE_HOST: ${{ secrets.SSH_HOST }}
+        REMOTE_USER: "kevin"
+        TARGET: "/var/www/collector.xuanye.site/"
+        EXCLUDE: "/dist/, /node_modules/"
