@@ -2,9 +2,8 @@
   'use strict';
 
   // --- Configuration ---
-  const config = {
-    // TODO: Update this to your reporting server endpoint in Part 4/5
-    endpoint: 'https://reporting.xuanye.site/api/log', 
+ const config = {
+    endpoint: 'https://reporting.xuanye.site/api/log.php', 
   };
 
   // --- Session Identity ---
