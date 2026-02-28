@@ -1,12 +1,10 @@
 (function () {
   'use strict';
 
-  // --- Configuration ---
  const config = {
     endpoint: 'https://reporting.xuanye.site/api/log.php', 
   };
 
-  // --- Session Identity ---
   function getSessionId() {
     let sid = sessionStorage.getItem('_collector_sid');
     if (!sid) {
@@ -19,7 +17,6 @@
   const sessionID = getSessionId();
   const entryTime = Date.now();
 
-  // --- Data Batching ---
   let activityQueue = [];
 
   // Send data to server
@@ -101,23 +98,21 @@
     }, 0);
   });
 
-  // Activity Tracking
-
   // Track Errors
   window.addEventListener('error', (event) => {
     activityQueue.push({ event: 'error', message: event.message, filename: event.filename, lineno: event.lineno });
   });
 
-  // Track Mouse Clicks
+  // track mouse clicks
   window.addEventListener('mousedown', (e) => {
     activityQueue.push({ event: 'click', x: e.clientX, y: e.clientY, button: e.button });
   });
 
-  // Track Mouse Movement (Throttled to avoid massive data bloat)
+  // Track Mouse Movement
   let lastMouseMove = 0;
   window.addEventListener('mousemove', (e) => {
     const now = Date.now();
-    if (now - lastMouseMove > 500) { // Only record every 500ms
+    if (now - lastMouseMove > 500) {
       activityQueue.push({ event: 'mousemove', x: e.clientX, y: e.clientY });
       lastMouseMove = now;
     }
@@ -149,7 +144,7 @@
   function resetIdleTimer() {
     const now = Date.now();
     
-    // If we were idle, record that the break ended and how long it lasted
+    // If idle, record that the break ended and how long it lasted
     if (isIdle) {
       const breakDuration = now - lastActivityTime;
       activityQueue.push({ event: 'idle_end', durationMs: breakDuration });
@@ -159,7 +154,7 @@
     lastActivityTime = now;
     clearTimeout(idleTimer);
     
-    // Set timer for 2 seconds (2000ms) of inactivity
+    // Set timer for 2 seconds of inactivity
     idleTimer = setTimeout(() => {
       isIdle = true;
       activityQueue.push({ event: 'idle_start', timestamp: Date.now() });
