@@ -37,6 +37,9 @@ To view the site, use these credentials when the popup appears:
 - Username: root
 - Password: CSE135MYSQL!!
 
+#### D. Testsite
+**URL:** https://test.xuanye.site
+
 ### 4. Technical Report
 
 #### HW 1 Part 2: GitHub Actions Deployment
