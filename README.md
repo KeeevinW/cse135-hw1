@@ -1,4 +1,4 @@
-# CSE 135 - Homework 1
+# CSE 135
 ## Team Xuanye
 
 ### 1. Team Members
