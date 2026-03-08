@@ -71,7 +71,7 @@ How it was achieved: Standard Apache configuration (`ServerTokens`) only allows 
 #### HW 2 Free Choice: Microsoft Clarity
 * **Discussion:** Clarity provides "Heatmaps" and "Scroll Maps," visualizing user behaviors. Unlike Google Analytics, which focuses on who visited, Clarity showed us how they behaved. Furthermore, it was easy to install.
 
-### 6. HW 1 Extra Credit: Analytics System (Matomo)
+### 5. HW 1 Extra Credit: Analytics System (Matomo)
 
 **Installation Process:**
 1.  Installed required PHP extensions (`php-xml`, `php-mbstring`, `php-gd`, `php-curl`) on the LAMP stack.
@@ -85,3 +85,15 @@ How it was achieved: Standard Apache configuration (`ServerTokens`) only allows 
 
 **Verification Link:**
 * [Matomo Login Page](https://xuanye.site/matomo)
+
+### 6. HW 4 - Derisk Checkpoint
+
+**Dashboard Access:**
+* **URL:** https://xuanye.site/login.php
+* **Username:** admin
+* **Password:** password123
+
+**Task Breakdown:**
+1. **Authentication & Navigation (Forceful Browsing Protection):** Implemented a PHP session-based authentication system. The `login.php` page checks the login information (username and password) and sets a secure session variable. The protected `dashboard.php` checks for this session variable before rendering, if this variable is missing, it immediately redirects the user back to the login page. This successfully prevents forceful browsing. Navigation is supported via a functional logout button that destroys the session.
+2. **Datastore to Data Table:** Established a PDO connection to the MySQL `analytics_db`. The backend queries the `raw_logs` table to fetch the 50 most recent tracked events and dynamically populates a raw HTML table to display the collected data.
+3. **Datastore to Chart:** Aggregated the raw event data using a SQL query (`SELECT event_type, COUNT(*) ... GROUP BY event_type`) to calculate the frequency of different tracking events. This aggregated data is passed to the frontend and visualized using a **Chart.js** bar chart.

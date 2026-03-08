@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// 1. FORCEFUL BROWSING PROTECTION
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: login.php");
     exit;
@@ -26,16 +25,11 @@ try {
     die("Database connection failed: " . $e->getMessage());
 }
 
-// 3. FETCH RECENT DATA FOR TABLE
 $stmt = $pdo->query("SELECT id, session_id, url, event_type, created_at FROM raw_logs ORDER BY created_at DESC LIMIT 50");
 $logs = $stmt->fetchAll();
-
-// 4. FETCH AGGREGATED DATA FOR CHART
-// Getting the count of each event type (e.g., how many 'initial_load' vs 'activity_batch')
 $chartStmt = $pdo->query("SELECT event_type, COUNT(*) as count FROM raw_logs GROUP BY event_type");
 $chartData = $chartStmt->fetchAll();
 
-// Prepare arrays for Chart.js
 $chartLabels = [];
 $chartCounts = [];
 foreach ($chartData as $row) {
