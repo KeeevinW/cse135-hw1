@@ -87,12 +87,42 @@ foreach ($chartData as $row) {
 
             <section id="behavior" class="mb-12 bg-white p-6 rounded-lg shadow">
                 <h3 class="text-xl font-bold border-b pb-2 mb-4">2. User Behavior (Events)</h3>
+                
                 <div class="w-full max-w-2xl mx-auto mb-6">
                     <canvas id="eventChart"></canvas>
                 </div>
                 
-                <div class="overflow-x-auto">
-                    </div>
+                <div class="overflow-x-auto mt-8">
+                    <h4 class="text-lg font-semibold mb-2">Recent Tracking Logs</h4>
+                    <table class="min-w-full border-collapse border border-gray-200 text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="border border-gray-200 px-4 py-2 text-left text-gray-600">ID</th>
+                                <th class="border border-gray-200 px-4 py-2 text-left text-gray-600">Session ID</th>
+                                <th class="border border-gray-200 px-4 py-2 text-left text-gray-600">Page URL</th>
+                                <th class="border border-gray-200 px-4 py-2 text-left text-gray-600">Event Type</th>
+                                <th class="border border-gray-200 px-4 py-2 text-left text-gray-600">Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (count($logs) > 0): ?>
+                                <?php foreach ($logs as $row): ?>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="border border-gray-200 px-4 py-2"><?php echo htmlspecialchars($row['id'] ?? ''); ?></td>
+                                        <td class="border border-gray-200 px-4 py-2"><?php echo htmlspecialchars($row['session_id'] ?? ''); ?></td>
+                                        <td class="border border-gray-200 px-4 py-2 text-blue-600 truncate max-w-xs"><?php echo htmlspecialchars($row['url'] ?? ''); ?></td>
+                                        <td class="border border-gray-200 px-4 py-2"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs"><?php echo htmlspecialchars($row['event_type'] ?? ''); ?></span></td>
+                                        <td class="border border-gray-200 px-4 py-2 text-gray-500"><?php echo htmlspecialchars($row['created_at'] ?? ''); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="5" class="border border-gray-200 px-4 py-4 text-center text-gray-500">No tracking data found yet.</td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </section>
 
             <section id="system" class="mb-12 bg-white p-6 rounded-lg shadow">
@@ -105,5 +135,33 @@ foreach ($chartData as $row) {
         </div>
     </div>
 
-    </body>
+    <script>
+        // Inject the PHP arrays into JavaScript as JSON for the Behavior Chart
+        const labels = <?php echo json_encode($chartLabels); ?>;
+        const dataCounts = <?php echo json_encode($chartCounts); ?>;
+
+        const ctx = document.getElementById('eventChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar', 
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Number of Events',
+                    data: dataCounts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
 </html>
