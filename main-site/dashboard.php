@@ -41,6 +41,42 @@ foreach ($chartData as $row) {
     $chartLabels[] = $row['event_type'];
     $chartCounts[] = $row['count'];
 }
+$perfStmt = $pdo->query("
+    SELECT 
+        DATE_FORMAT(created_at, '%H:%i:%s') as time_label, 
+        JSON_UNQUOTE(JSON_EXTRACT(json_payload, '$.performance.totalLoadTime')) as load_time 
+    FROM raw_logs 
+    WHERE event_type = 'initial_load' AND JSON_EXTRACT(json_payload, '$.performance.totalLoadTime') IS NOT NULL
+    ORDER BY created_at DESC 
+    LIMIT 10
+");
+$perfData = array_reverse($perfStmt->fetchAll()); // Reverse so oldest is on the left of the chart
+
+$perfLabels = [];
+$perfTimes = [];
+foreach ($perfData as $row) {
+    $perfLabels[] = $row['time_label'];
+    $perfTimes[] = $row['load_time'];
+}
+
+// --- 2. SYSTEM DATA (Connection Types) ---
+// We extract connectionType from the JSON payload to see what networks users are on
+$sysStmt = $pdo->query("
+    SELECT 
+        JSON_UNQUOTE(JSON_EXTRACT(json_payload, '$.static.connectionType')) as conn_type, 
+        COUNT(*) as count 
+    FROM raw_logs 
+    WHERE event_type = 'initial_load' AND JSON_EXTRACT(json_payload, '$.static.connectionType') IS NOT NULL
+    GROUP BY conn_type
+");
+$sysData = $sysStmt->fetchAll();
+
+$sysLabels = [];
+$sysCounts = [];
+foreach ($sysData as $row) {
+    $sysLabels[] = $row['conn_type'] ? strtoupper($row['conn_type']) : 'UNKNOWN';
+    $sysCounts[] = $row['count'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -74,8 +110,8 @@ foreach ($chartData as $row) {
 
             <section id="performance" class="mb-12 bg-white p-6 rounded-lg shadow">
                 <h3 class="text-xl font-bold border-b pb-2 mb-4">1. Performance Metrics</h3>
-                <div class="h-64 bg-gray-50 flex items-center justify-center border border-dashed border-gray-300 mb-4">
-                    <span class="text-gray-400">[Chart.js Load Time Chart Placeholder]</span>
+                <div class="w-full max-w-3xl mx-auto mb-4">
+                    <canvas id="performanceChart"></canvas>
                 </div>
                 
                 <div class="mt-4">
@@ -127,9 +163,9 @@ foreach ($chartData as $row) {
 
             <section id="system" class="mb-12 bg-white p-6 rounded-lg shadow">
                 <h3 class="text-xl font-bold border-b pb-2 mb-4">3. System & Errors</h3>
-                 <div class="h-64 bg-gray-50 flex items-center justify-center border border-dashed border-gray-300 mb-4">
-                    <span class="text-gray-400">[Chart.js Error Tracking Placeholder]</span>
-                </div>
+                 <div class="w-full max-w-sm mx-auto mb-4">
+                    <canvas id="systemChart"></canvas>
+                 </div>
             </section>
 
         </div>
@@ -161,6 +197,45 @@ foreach ($chartData as $row) {
                     }
                 }
             }
+        });
+        const perfLabels = <?php echo json_encode($perfLabels); ?>;
+        const perfTimes = <?php echo json_encode($perfTimes); ?>;
+
+        new Chart(document.getElementById('performanceChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: perfLabels,
+                datasets: [{
+                    label: 'Page Load Time (ms)',
+                    data: perfTimes,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: { responsive: true }
+        });
+
+        const sysLabels = <?php echo json_encode($sysLabels); ?>;
+        const sysCounts = <?php echo json_encode($sysCounts); ?>;
+
+        new Chart(document.getElementById('systemChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: sysLabels,
+                datasets: [{
+                    label: 'Connection Types',
+                    data: sysCounts,
+                    backgroundColor: [
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(201, 203, 207, 0.6)'
+                    ]
+                }]
+            },
+            options: { responsive: true }
         });
     </script>
 </body>
