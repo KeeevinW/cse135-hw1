@@ -48,84 +48,62 @@ foreach ($chartData as $row) {
 <head>
     <meta charset="UTF-8">
     <title>Analytics Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { font-family: sans-serif; padding: 20px; max-width: 1200px; margin: 0 auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .chart-container { width: 60%; margin: 40px 0; }
-    </style>
 </head>
-<body>
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h2>Analytics Dashboard</h2>
-        <a href="logout.php" style="padding: 8px 16px; background: #dc3545; color: white; text-decoration: none; border-radius: 4px;">Logout</a>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal flex h-screen">
+
+    <div class="w-64 bg-gray-900 h-screen shadow-lg fixed">
+        <div class="p-6">
+            <h1 class="text-white text-2xl font-bold">Team Xuanye</h1>
+            <p class="text-gray-400 text-sm mt-1">Role: <?php echo htmlspecialchars($_SESSION['role']); ?></p>
+        </div>
+        <nav class="mt-6">
+            <a href="#performance" class="block py-3 px-6 text-gray-300 hover:text-white hover:bg-gray-800">1. Performance</a>
+            <a href="#behavior" class="block py-3 px-6 text-gray-300 hover:text-white hover:bg-gray-800">2. User Behavior</a>
+            <a href="#system" class="block py-3 px-6 text-gray-300 hover:text-white hover:bg-gray-800">3. System & Errors</a>
+        </nav>
+        <div class="absolute bottom-0 w-full">
+            <a href="logout.php" class="block py-4 px-6 text-center text-white bg-red-600 hover:bg-red-700">Logout</a>
+        </div>
     </div>
-    <p>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</p>
-    <hr>
 
-    <h3>Event Frequency Chart</h3>
-    <div class="chart-container">
-        <canvas id="eventChart"></canvas>
+    <div class="flex-1 ml-64 overflow-y-auto">
+        <div class="p-8">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-6">Analytics Overview</h2>
+
+            <section id="performance" class="mb-12 bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-bold border-b pb-2 mb-4">1. Performance Metrics</h3>
+                <div class="h-64 bg-gray-50 flex items-center justify-center border border-dashed border-gray-300 mb-4">
+                    <span class="text-gray-400">[Chart.js Load Time Chart Placeholder]</span>
+                </div>
+                
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-700">Analyst Comments</label>
+                    <textarea class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" rows="3" placeholder="Enter interpretation of performance data..."></textarea>
+                    <button class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save Comment</button>
+                </div>
+            </section>
+
+            <section id="behavior" class="mb-12 bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-bold border-b pb-2 mb-4">2. User Behavior (Events)</h3>
+                <div class="w-full max-w-2xl mx-auto mb-6">
+                    <canvas id="eventChart"></canvas>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    </div>
+            </section>
+
+            <section id="system" class="mb-12 bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-bold border-b pb-2 mb-4">3. System & Errors</h3>
+                 <div class="h-64 bg-gray-50 flex items-center justify-center border border-dashed border-gray-300 mb-4">
+                    <span class="text-gray-400">[Chart.js Error Tracking Placeholder]</span>
+                </div>
+            </section>
+
+        </div>
     </div>
 
-    <h3>Raw Collected Data</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Session ID</th>
-                <th>Page URL</th>
-                <th>Event Type</th>
-                <th>Timestamp</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (count($logs) > 0): ?>
-                <?php foreach ($logs as $row): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($row['id'] ?? ''); ?></td>
-                        <td><?php echo htmlspecialchars($row['session_id'] ?? ''); ?></td>
-                        <td><?php echo htmlspecialchars($row['url'] ?? ''); ?></td>
-                        <td><?php echo htmlspecialchars($row['event_type'] ?? ''); ?></td>
-                        <td><?php echo htmlspecialchars($row['created_at'] ?? ''); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="5">No tracking data found yet.</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
-
-    <script>
-        // Inject the PHP arrays into JavaScript as JSON
-        const labels = <?php echo json_encode($chartLabels); ?>;
-        const dataCounts = <?php echo json_encode($chartCounts); ?>;
-
-        const ctx = document.getElementById('eventChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar', // You can change this to 'pie' or 'line' if you prefer
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Number of Events',
-                    data: dataCounts,
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-</body>
+    </body>
 </html>
