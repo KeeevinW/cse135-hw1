@@ -6,7 +6,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit;
 }
 
-// RBAC CHECK: Kick out viewers to a 403 page 
 if ($_SESSION['role'] === 'viewer') {
     header("Location: 403.php"); // Or wherever you handle forbidden access
     exit;
