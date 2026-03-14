@@ -86,6 +86,7 @@ foreach ($sysData as $row) {
     <title>Analytics Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal flex h-screen">
 
@@ -169,7 +170,30 @@ foreach ($sysData as $row) {
             </section>
 
         </div>
+        <div class="flex-1 ml-64 overflow-y-auto">
+            <div class="p-8">
+                
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-3xl font-semibold text-gray-800">Analytics Overview</h2>
+                    <button onclick="exportToPDF()" class="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700 transition">
+                        Export to PDF
+                    </button>
+                </div>
+
+                <div id="pdf-content">
+                    <section id="performance" class="mb-12 bg-white p-6 rounded-lg shadow">
+                        </section>
+
+                    <section id="behavior" class="mb-12 bg-white p-6 rounded-lg shadow">
+                        </section>
+
+                    <section id="system" class="mb-12 bg-white p-6 rounded-lg shadow">
+                        </section>
+                </div> </div>
+        </div>
     </div>
+
+    
 
     <script>
         // Inject the PHP arrays into JavaScript as JSON for the Behavior Chart
@@ -237,6 +261,23 @@ foreach ($sysData as $row) {
             },
             options: { responsive: true }
         });
+
+        function exportToPDF() {
+            // 1. Select the area you want to export
+            const element = document.getElementById('pdf-content');
+            
+            // 2. Configure the PDF options
+            const opt = {
+                margin:       0.5,
+                filename:     'Team_Xuanye_Analytics_Report.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true }, // scale: 2 makes the charts look sharp
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // 3. Generate and save the PDF
+            html2pdf().set(opt).from(element).save();
+        }
     </script>
 </body>
 </html>
