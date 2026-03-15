@@ -21,17 +21,14 @@
 
 ---
 
-### 2. Recommended Testing Scenario
-
-To fully evaluate the features implemented for this final push, please follow these steps:
-
-1. **Log in as an Analyst or Super Admin:** Navigate to `https://xuanye.site/login.php` and log in using the Analyst credentials (`data_analyst` / `analystpass`).
-2. **Review the Dashboard:** You will be routed to `dashboard.php`. Observe the Tailwind CSS-styled layout containing the three required report categories: Performance Metrics (Line Chart), User Behavior (Bar Chart + Data Table), and System Data (Doughnut Chart).
-3. **Test the PDF Export:** Click the "Export to PDF" button at the top right of the dashboard. This uses client-side rendering (`html2pdf.js`) to capture the charts and tables and will automatically download a PDF formatted report to your machine.
-4. **Test the Analyst Comments UI:** Type a comment in the "Analyst Comments" box under the Performance section. Notice that this section is intentionally excluded from the PDF export so the final generated report remains clean.
-5. **Log Out:** Click the "Logout" button in the sidebar.
-6. **Test Role-Based Access Control (RBAC):** Log back in using the Viewer credentials (`basic_viewer` / `viewerpass`). Attempt to navigate directly to `dashboard.php`. You should be immediately intercepted by the RBAC session logic and redirected to a custom `403.php` Access Denied page.
-7. **Test "Script Off" Contingency:** Disable JavaScript in your browser and attempt to load `login.php` or the dashboard. A `<noscript>` warning banner will appear gracefully informing the user that the dashboard requires JavaScript to render charts.
+### 2. Testing Scenario
+To evaluate the project, please follow these steps:
+1. Log in as the **Basic Viewer**. Observe that you are immediately redirected away from the raw data dashboard (403 or Saved Reports stub), validating that viewers cannot see raw data.
+2. Log out, and log back in as the **Data Analyst**. 
+3. Scroll down the dashboard to view the three distinct report categories (Performance, Behavior, and System). 
+4. Type a brief analysis in the "Analyst Interpretation" text area under Performance Metrics and click "Save Comment". Refresh the page to verify the text persists.
+5. Click the **"Export to PDF"** button at the top right.
+6. Open the downloaded PDF. Verify that the layout is clean, the Chart.js canvases rendered successfully, and your written comment is visible (while the 'Save' button is hidden).
 
 ---
 
@@ -41,5 +38,5 @@ In the spirit of accountability, here are a few areas of the architecture that c
 
 * **Tailwind CSS via CDN:** To achieve a visually organized and modern UI, the dashboard uses the Tailwind Play CDN. While excellent for prototyping, this is not a production-ready architectural choice. In a real-world scenario, this adds network latency and should be replaced with a compiled CSS file using a build step (Node.js/PostCSS).
 * **Client-Side PDF Generation:** The PDF export relies heavily on the user's browser to render the canvas elements via `html2pdf.js`. While this bypasses the issue of server-side PHP libraries failing to capture JavaScript charts, it means the quality and formatting of the PDF can occasionally vary depending on the client's screen size or browser engine.
-* **Analyst Comments Persistence:** The UI for Analyst Comments is present to fulfill the visual requirements of the dashboard, but the "Save Comment" button does not currently trigger an AJAX/fetch request to persist the text back to the MySQL database.
+* **Analyst Comments Architecture:** The Analyst Comment saving mechanism utilizes browser `localStorage` rather than a MySQL backend. This means comments are device-specific and will not globally sync for other analysts viewing the dashboard.
 * **Session Security:** While the authentication system properly hashes passwords and checks roles, the session management is relatively basic. To be fully secure, it should implement session ID regeneration upon login and utilize CSRF tokens on forms to prevent cross-site request forgery.
