@@ -7,7 +7,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 }
 
 if ($_SESSION['role'] === 'viewer') {
-    header("Location: 403.php"); // Or wherever you handle forbidden access
+    header("Location: 403.php");
     exit;
 }
 
@@ -90,6 +90,12 @@ foreach ($sysData as $row) {
 </head>
 <body class="bg-gray-100 font-sans leading-normal tracking-normal flex h-screen">
 
+    <noscript>
+        <div style="background-color: #fee2e2; color: #991b1b; padding: 1rem; text-align: center; font-weight: bold; border-bottom: 2px solid #b91c1c;">
+            Warning: JavaScript is disabled in your browser. The charts, styling, and PDF export will not function properly. Please enable JavaScript to view this dashboard.
+        </div>
+    </noscript>
+
     <div class="w-64 bg-gray-900 h-screen shadow-lg fixed">
         <div class="p-6">
             <h1 class="text-white text-2xl font-bold">Team Xuanye</h1>
@@ -123,9 +129,11 @@ foreach ($sysData as $row) {
                         <canvas id="performanceChart"></canvas>
                     </div>
                     
-                    <div class="mt-4" data-html2canvas-ignore> <label class="block text-sm font-medium text-gray-700">Analyst Comments</label>
-                        <textarea class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2" rows="3" placeholder="Enter interpretation of performance data..."></textarea>
-                        <button class="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Save Comment</button>
+                    <div class="mt-4 border-t pt-4">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Analyst Interpretation:</label>
+                        <textarea id="perfComment" class="block w-full rounded-md border-gray-300 shadow-sm border p-3 text-gray-700" rows="3" placeholder="Enter interpretation of performance data..."></textarea>
+                        <button id="saveCommentBtn" onclick="saveComment()" data-html2canvas-ignore class="mt-3 bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition">Save Comment</button>
+                        <span id="saveStatus" class="ml-3 text-sm text-green-600 hidden" data-html2canvas-ignore>Saved!</span>
                     </div>
                 </section>
 
@@ -182,7 +190,6 @@ foreach ($sysData as $row) {
     
 
     <script>
-        // Inject the PHP arrays into JavaScript as JSON for the Behavior Chart
         const labels = <?php echo json_encode($chartLabels); ?>;
         const dataCounts = <?php echo json_encode($chartCounts); ?>;
 
@@ -263,6 +270,21 @@ foreach ($sysData as $row) {
 
             // 3. Generate and save the PDF
             html2pdf().set(opt).from(element).save();
+        }
+
+        const commentBox = document.getElementById('perfComment');
+        const statusText = document.getElementById('saveStatus');
+
+        // Load saved comment on page load
+        if (localStorage.getItem('performanceComment')) {
+            commentBox.value = localStorage.getItem('performanceComment');
+        }
+
+        // Save comment function
+        function saveComment() {
+            localStorage.setItem('performanceComment', commentBox.value);
+            statusText.classList.remove('hidden');
+            setTimeout(() => statusText.classList.add('hidden'), 2000);
         }
     </script>
 </body>
