@@ -6,9 +6,12 @@
 
 ### 1. Access Credentials
 
-**Site Basic Auth (if prompted by the browser):**
+**Site Basic Auth:**
 * **Username:** `team_user`
 * **Password:** `TEAMSITE!!`
+
+* **Analytics Site URL**
+  * https://xuanye.site/login.php
 
 **Dashboard Role-Based Accounts:**
 * **Super Admin:** * Username: `superadmin`
