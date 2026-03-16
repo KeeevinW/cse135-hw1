@@ -46,6 +46,17 @@ if ($_SESSION['role'] === 'super_admin') {
     $usersList = $userStmt->fetchAll();
 }
 
+$pageStmt = $pdo->query("SELECT url, COUNT(*) as hits FROM raw_logs WHERE event_type IN ('page_load', 'initial_load') GROUP BY url ORDER BY hits DESC LIMIT 5");
+$pageData = $pageStmt->fetchAll();
+$pageLabels = [];
+$pageCounts = [];
+foreach ($pageData as $row) {
+    // Clean up the URL so it fits nicely on a chart
+    $cleanUrl = parse_url($row['url'], PHP_URL_PATH) ?: 'Homepage';
+    $pageLabels[] = $cleanUrl;
+    $pageCounts[] = $row['hits'];
+}
+
 $stmt = $pdo->query("SELECT id, session_id, url, event_type, created_at FROM raw_logs ORDER BY created_at DESC LIMIT 50");
 $logs = $stmt->fetchAll();
 $chartStmt = $pdo->query("SELECT event_type, COUNT(*) as count FROM raw_logs GROUP BY event_type");
@@ -186,6 +197,11 @@ foreach ($sysData as $row) {
                     <?php endif; ?>
                 </tbody>
             </table>
+
+            <h4 class="text-md font-bold text-center mt-8 mb-2">Most Visited Pages</h4>
+            <div class="chart-container">
+                <canvas id="topPagesChart"></canvas>
+            </div>
         </div>
 
         <div id="system" class="section-box">
@@ -328,6 +344,23 @@ foreach ($sysData as $row) {
             statusText.style.display = 'inline';
             setTimeout(() => statusText.style.display = 'none', 2000);
         }
+
+        const pageLabels = <?php echo json_encode($pageLabels); ?>;
+        const pageCounts = <?php echo json_encode($pageCounts); ?>;
+        new Chart(document.getElementById('topPagesChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: pageLabels,
+                datasets: [{
+                    label: 'Total Visits',
+                    data: pageCounts,
+                    backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: { indexAxis: 'y', responsive: true }
+        });
     </script>
 </body>
 </html>
