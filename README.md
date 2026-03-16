@@ -97,3 +97,15 @@ How it was achieved: Standard Apache configuration (`ServerTokens`) only allows 
 1. **Authentication & Navigation (Forceful Browsing Protection):** Implemented a PHP session-based authentication system. The `login.php` page checks the login information (username and password) and sets a secure session variable. The protected `dashboard.php` checks for this session variable before rendering, if this variable is missing, it immediately redirects the user back to the login page. This successfully prevents forceful browsing. Navigation is supported via a functional logout button that destroys the session.
 2. **Datastore to Data Table:** Established a PDO connection to the MySQL `analytics_db`. The backend queries the `raw_logs` table to fetch the 50 most recent tracked events and dynamically populates a raw HTML table to display the collected data.
 3. **Datastore to Chart:** Aggregated the raw event data using a SQL query (`SELECT event_type, COUNT(*) ... GROUP BY event_type`) to calculate the frequency of different tracking events. This aggregated data is passed to the frontend and visualized using a **Chart.js** bar chart.
+
+### 7. HW 5 - Final Project
+
+#### AI Usage & Value
+During this final phase, AI (Google Gemini) was utilized to assist in structuring the Role-Based Access Control (RBAC) logic, drafting the Tailwind CSS layout, and writing the SQL JSON-extraction queries for the analytics charts. 
+* **Value:** AI was highly valuable for rapidly prototyping the Tailwind layout without needing a full Node/PostCSS build pipeline, and for navigating the specifics of the `html2pdf.js` library. It acted as an effective pair-programmer for syntax and layout generation.
+
+#### Future Roadmap (Time Permitting)
+If given more time, I would implement the following:
+1. Currently, the analyst comments is stored in `localStorage`. If I have more time, I will transition it from `localStorage` to a dedicated MySQL table with author attribution and timestamps.
+2. **User Management Panel:** Build a dedicated UI for the `super_admin` to create, edit, and revoke user access dynamically without touching the database directly.
+3. **Date Range Filtering:** Add interactive date pickers to the dashboard so Analysts can filter the Chart.js visualizations by specific timeframes (e.g., "Last 7 Days" or "Last 30 Days").

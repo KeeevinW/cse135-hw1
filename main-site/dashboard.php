@@ -30,6 +30,24 @@ try {
     die("Database connection failed: " . $e->getMessage());
 }
 
+// --- USER MANAGEMENT (Super Admin Only) ---
+$usersList = [];
+if ($_SESSION['role'] === 'super_admin') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user_id'])) {
+        $deleteId = $_POST['delete_user_id'];
+        // Prevent the super admin from accidentally deleting themselves
+        if ($deleteId != $_SESSION['user_id']) {
+            $delStmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
+            $delStmt->execute([$deleteId]);
+        }
+        header("Location: dashboard.php");
+        exit;
+    }
+    $userStmt = $pdo->query("SELECT id, username, role, created_at FROM users ORDER BY created_at DESC");
+    $usersList = $userStmt->fetchAll();
+}
+
+// --- BEHAVIOR DATA ---
 $stmt = $pdo->query("SELECT id, session_id, url, event_type, created_at FROM raw_logs ORDER BY created_at DESC LIMIT 50");
 $logs = $stmt->fetchAll();
 $chartStmt = $pdo->query("SELECT event_type, COUNT(*) as count FROM raw_logs GROUP BY event_type");
@@ -41,6 +59,8 @@ foreach ($chartData as $row) {
     $chartLabels[] = $row['event_type'];
     $chartCounts[] = $row['count'];
 }
+
+// --- PERFORMANCE DATA ---
 $perfStmt = $pdo->query("
     SELECT 
         DATE_FORMAT(created_at, '%H:%i:%s') as time_label, 
@@ -50,7 +70,7 @@ $perfStmt = $pdo->query("
     ORDER BY created_at DESC 
     LIMIT 10
 ");
-$perfData = array_reverse($perfStmt->fetchAll()); // Reverse so oldest is on the left of the chart
+$perfData = array_reverse($perfStmt->fetchAll());
 
 $perfLabels = [];
 $perfTimes = [];
@@ -59,8 +79,7 @@ foreach ($perfData as $row) {
     $perfTimes[] = $row['load_time'];
 }
 
-// --- 2. SYSTEM DATA (Connection Types) ---
-// We extract connectionType from the JSON payload to see what networks users are on
+// --- SYSTEM DATA ---
 $sysStmt = $pdo->query("
     SELECT 
         JSON_UNQUOTE(JSON_EXTRACT(json_payload, '$.static.connectionType')) as conn_type, 
@@ -105,6 +124,11 @@ foreach ($sysData as $row) {
             <a href="#performance" class="block py-3 px-6 text-gray-300 hover:text-white hover:bg-gray-800">1. Performance</a>
             <a href="#behavior" class="block py-3 px-6 text-gray-300 hover:text-white hover:bg-gray-800">2. User Behavior</a>
             <a href="#system" class="block py-3 px-6 text-gray-300 hover:text-white hover:bg-gray-800">3. System & Errors</a>
+            <?php if ($_SESSION['role'] === 'super_admin'): ?>
+                <a href="#admin-users" class="block py-3 px-6 text-yellow-400 hover:text-yellow-300 hover:bg-gray-800 font-bold border-t border-gray-700 mt-2 pt-4">
+                    4. Manage Users
+                </a>
+            <?php endif; ?>
         </nav>
         <div class="absolute bottom-0 w-full">
             <a href="logout.php" class="block py-4 px-6 text-center text-white bg-red-600 hover:bg-red-700">Logout</a>
@@ -139,7 +163,6 @@ foreach ($sysData as $row) {
 
                 <section id="behavior" class="mb-12 bg-white p-6 rounded-lg shadow">
                     <h3 class="text-xl font-bold border-b pb-2 mb-4">2. User Behavior (Events)</h3>
-                    
                     <div class="w-full max-w-2xl mx-auto mb-6">
                         <canvas id="eventChart"></canvas>
                     </div>
@@ -184,12 +207,52 @@ foreach ($sysData as $row) {
                     </div>
                 </section>
 
-            </div> </div>
-    </div>
+            </div> <?php if ($_SESSION['role'] === 'super_admin'): ?>
+            <section id="admin-users" class="mb-12 bg-white p-6 rounded-lg shadow border-t-4 border-yellow-400 mt-8">
+                <h3 class="text-xl font-bold border-b pb-2 mb-4">⚙️ User Management</h3>
+                <p class="text-sm text-gray-600 mb-4">As a Super Admin, you have permission to view and revoke access for system users.</p>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full border-collapse border border-gray-200 text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="border border-gray-200 px-4 py-2 text-left">ID</th>
+                                <th class="border border-gray-200 px-4 py-2 text-left">Username</th>
+                                <th class="border border-gray-200 px-4 py-2 text-left">Role</th>
+                                <th class="border border-gray-200 px-4 py-2 text-left">Created At</th>
+                                <th class="border border-gray-200 px-4 py-2 text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($usersList as $u): ?>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-200 px-4 py-2"><?php echo htmlspecialchars($u['id']); ?></td>
+                                    <td class="border border-gray-200 px-4 py-2 font-semibold"><?php echo htmlspecialchars($u['username']); ?></td>
+                                    <td class="border border-gray-200 px-4 py-2">
+                                        <span class="px-2 py-1 rounded text-xs <?php echo ($u['role'] === 'super_admin') ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-200 text-gray-800'; ?>">
+                                            <?php echo htmlspecialchars(strtoupper($u['role'])); ?>
+                                        </span>
+                                    </td>
+                                    <td class="border border-gray-200 px-4 py-2 text-gray-500"><?php echo htmlspecialchars($u['created_at']); ?></td>
+                                    <td class="border border-gray-200 px-4 py-2 text-center">
+                                        <?php if ($u['id'] != $_SESSION['user_id']): ?>
+                                            <form method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');" style="display:inline;">
+                                                <input type="hidden" name="delete_user_id" value="<?php echo $u['id']; ?>">
+                                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded text-xs hover:bg-red-600">Delete</button>
+                                            </form>
+                                        <?php else: ?>
+                                            <span class="text-gray-400 italic text-xs">Current User</span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <?php endif; ?>
 
-    
-
-    <script>
+        </div> </div> <script>
         const labels = <?php echo json_encode($chartLabels); ?>;
         const dataCounts = <?php echo json_encode($chartCounts); ?>;
 
@@ -215,6 +278,7 @@ foreach ($sysData as $row) {
                 }
             }
         });
+
         const perfLabels = <?php echo json_encode($perfLabels); ?>;
         const perfTimes = <?php echo json_encode($perfTimes); ?>;
 
@@ -256,31 +320,24 @@ foreach ($sysData as $row) {
         });
 
         function exportToPDF() {
-            // 1. Select the area you want to export
             const element = document.getElementById('pdf-content');
-            
-            // 2. Configure the PDF options
             const opt = {
                 margin:       0.5,
                 filename:     'Team_Xuanye_Analytics_Report.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true }, // scale: 2 makes the charts look sharp
+                html2canvas:  { scale: 2, useCORS: true }, 
                 jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
-
-            // 3. Generate and save the PDF
             html2pdf().set(opt).from(element).save();
         }
 
         const commentBox = document.getElementById('perfComment');
         const statusText = document.getElementById('saveStatus');
 
-        // Load saved comment on page load
         if (localStorage.getItem('performanceComment')) {
             commentBox.value = localStorage.getItem('performanceComment');
         }
 
-        // Save comment function
         function saveComment() {
             localStorage.setItem('performanceComment', commentBox.value);
             statusText.classList.remove('hidden');
