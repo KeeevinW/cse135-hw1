@@ -103,156 +103,144 @@ foreach ($sysData as $row) {
 <head>
     <meta charset="UTF-8">
     <title>Analytics Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body { font-family: sans-serif; margin: 20px; color: #333; }
+        .nav-bar { background: #eee; padding: 15px; border: 1px solid #ccc; margin-bottom: 20px; }
+        .section-box { border: 1px solid #ccc; padding: 20px; margin-bottom: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+        th, td { border: 1px solid #aaa; padding: 8px; text-align: left; }
+        th { background: #f9f9f9; }
+        .chart-container { max-width: 600px; margin-bottom: 15px; }
+    </style>
 </head>
-<body class="bg-gray-100 font-sans leading-normal tracking-normal flex h-screen">
+<body>
 
     <noscript>
-        <div style="background-color: #fee2e2; color: #991b1b; padding: 1rem; text-align: center; font-weight: bold; border-bottom: 2px solid #b91c1c;">
-            Warning: JavaScript is disabled in your browser. The charts, styling, and PDF export will not function properly. Please enable JavaScript to view this dashboard.
+        <div style="background-color: #fee2e2; color: #991b1b; padding: 1rem; border: 2px solid #b91c1c;">
+            Warning: JavaScript is disabled in your browser. The charts and PDF export will not function properly.
         </div>
     </noscript>
 
-    <div class="w-64 bg-gray-900 h-screen shadow-lg fixed">
-        <div class="p-6">
-            <h1 class="text-white text-2xl font-bold">Team Xuanye</h1>
-            <p class="text-gray-400 text-sm mt-1">Role: <?php echo htmlspecialchars($_SESSION['role']); ?></p>
-        </div>
-        <nav class="mt-6">
-            <a href="#performance" class="block py-3 px-6 text-gray-300 hover:text-white hover:bg-gray-800">1. Performance</a>
-            <a href="#behavior" class="block py-3 px-6 text-gray-300 hover:text-white hover:bg-gray-800">2. User Behavior</a>
-            <a href="#system" class="block py-3 px-6 text-gray-300 hover:text-white hover:bg-gray-800">3. System & Errors</a>
-            <?php if ($_SESSION['role'] === 'super_admin'): ?>
-                <a href="#admin-users" class="block py-3 px-6 text-yellow-400 hover:text-yellow-300 hover:bg-gray-800 font-bold border-t border-gray-700 mt-2 pt-4">
-                    4. Manage Users
-                </a>
-            <?php endif; ?>
-        </nav>
-        <div class="absolute bottom-0 w-full">
-            <a href="logout.php" class="block py-4 px-6 text-center text-white bg-red-600 hover:bg-red-700">Logout</a>
-        </div>
+    <div class="nav-bar">
+        <h1>Team Xuanye</h1>
+        <p>Role: <?php echo htmlspecialchars($_SESSION['role']); ?></p>
+        <hr>
+        <a href="#performance">1. Performance</a> | 
+        <a href="#behavior">2. User Behavior</a> | 
+        <a href="#system">3. System & Errors</a> 
+        <?php if ($_SESSION['role'] === 'super_admin'): ?>
+            | <a href="#admin-users">4. Manage Users</a>
+        <?php endif; ?>
+        | <a href="logout.php" style="color: red;">Logout</a>
     </div>
 
-    <div class="flex-1 ml-64 overflow-y-auto">
-        <div class="p-8">
-            
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-3xl font-semibold text-gray-800">Analytics Overview</h2>
-                <button onclick="exportToPDF()" class="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700 transition">
-                    Export to PDF
-                </button>
+    <h2>Analytics Overview</h2>
+    <button onclick="exportToPDF()" style="padding: 10px; cursor: pointer;">Export to PDF</button>
+    <br><br>
+
+    <div id="pdf-content">
+        
+        <div id="performance" class="section-box">
+            <h3>1. Performance Metrics</h3>
+            <div class="chart-container">
+                <canvas id="performanceChart"></canvas>
             </div>
+            
+            <hr>
+            <label><strong>Analyst Interpretation:</strong></label><br>
+            <textarea id="perfComment" rows="3" cols="60" placeholder="Enter interpretation of performance data..."></textarea><br>
+            <button id="saveCommentBtn" onclick="saveComment()" data-html2canvas-ignore>Save Comment</button>
+            <span id="saveStatus" style="color: green; display: none;" data-html2canvas-ignore>Saved!</span>
+        </div>
 
-            <div id="pdf-content">
-                
-                <section id="performance" class="mb-12 bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-xl font-bold border-b pb-2 mb-4">1. Performance Metrics</h3>
-                    <div class="w-full max-w-3xl mx-auto mb-4">
-                        <canvas id="performanceChart"></canvas>
-                    </div>
-                    
-                    <div class="mt-4 border-t pt-4">
-                        <label class="block text-sm font-bold text-gray-700 mb-2">Analyst Interpretation:</label>
-                        <textarea id="perfComment" class="block w-full rounded-md border-gray-300 shadow-sm border p-3 text-gray-700" rows="3" placeholder="Enter interpretation of performance data..."></textarea>
-                        <button id="saveCommentBtn" onclick="saveComment()" data-html2canvas-ignore class="mt-3 bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 transition">Save Comment</button>
-                        <span id="saveStatus" class="ml-3 text-sm text-green-600 hidden" data-html2canvas-ignore>Saved!</span>
-                    </div>
-                </section>
-
-                <section id="behavior" class="mb-12 bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-xl font-bold border-b pb-2 mb-4">2. User Behavior (Events)</h3>
-                    <div class="w-full max-w-2xl mx-auto mb-6">
-                        <canvas id="eventChart"></canvas>
-                    </div>
-                    
-                    <div class="overflow-x-auto mt-8">
-                        <h4 class="text-lg font-semibold mb-2">Recent Tracking Logs</h4>
-                        <table class="min-w-full border-collapse border border-gray-200 text-sm">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="border border-gray-200 px-4 py-2 text-left text-gray-600">ID</th>
-                                    <th class="border border-gray-200 px-4 py-2 text-left text-gray-600">Session ID</th>
-                                    <th class="border border-gray-200 px-4 py-2 text-left text-gray-600">Page URL</th>
-                                    <th class="border border-gray-200 px-4 py-2 text-left text-gray-600">Event Type</th>
-                                    <th class="border border-gray-200 px-4 py-2 text-left text-gray-600">Timestamp</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (count($logs) > 0): ?>
-                                    <?php foreach ($logs as $row): ?>
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="border border-gray-200 px-4 py-2"><?php echo htmlspecialchars($row['id'] ?? ''); ?></td>
-                                            <td class="border border-gray-200 px-4 py-2"><?php echo htmlspecialchars($row['session_id'] ?? ''); ?></td>
-                                            <td class="border border-gray-200 px-4 py-2 text-blue-600 truncate max-w-xs"><?php echo htmlspecialchars($row['url'] ?? ''); ?></td>
-                                            <td class="border border-gray-200 px-4 py-2"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs"><?php echo htmlspecialchars($row['event_type'] ?? ''); ?></span></td>
-                                            <td class="border border-gray-200 px-4 py-2 text-gray-500"><?php echo htmlspecialchars($row['created_at'] ?? ''); ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <tr>
-                                        <td colspan="5" class="border border-gray-200 px-4 py-4 text-center text-gray-500">No tracking data found yet.</td>
-                                    </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <section id="system" class="mb-12 bg-white p-6 rounded-lg shadow">
-                    <h3 class="text-xl font-bold border-b pb-2 mb-4">3. System Data</h3>
-                    <div class="w-full max-w-sm mx-auto mb-4">
-                        <canvas id="systemChart"></canvas>
-                    </div>
-                </section>
-
-            </div> <?php if ($_SESSION['role'] === 'super_admin'): ?>
-            <section id="admin-users" class="mb-12 bg-white p-6 rounded-lg shadow border-t-4 border-yellow-400 mt-8">
-                <h3 class="text-xl font-bold border-b pb-2 mb-4">⚙️ User Management</h3>
-                <p class="text-sm text-gray-600 mb-4">As a Super Admin, you have permission to view and revoke access for system users.</p>
-                
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border-collapse border border-gray-200 text-sm">
-                        <thead class="bg-gray-50">
+        <div id="behavior" class="section-box">
+            <h3>2. User Behavior (Events)</h3>
+            <div class="chart-container">
+                <canvas id="eventChart"></canvas>
+            </div>
+            
+            <h4>Recent Tracking Logs</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Session ID</th>
+                        <th>Page URL</th>
+                        <th>Event Type</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (count($logs) > 0): ?>
+                        <?php foreach ($logs as $row): ?>
                             <tr>
-                                <th class="border border-gray-200 px-4 py-2 text-left">ID</th>
-                                <th class="border border-gray-200 px-4 py-2 text-left">Username</th>
-                                <th class="border border-gray-200 px-4 py-2 text-left">Role</th>
-                                <th class="border border-gray-200 px-4 py-2 text-left">Created At</th>
-                                <th class="border border-gray-200 px-4 py-2 text-center">Action</th>
+                                <td><?php echo htmlspecialchars($row['id'] ?? ''); ?></td>
+                                <td><?php echo htmlspecialchars($row['session_id'] ?? ''); ?></td>
+                                <td><?php echo htmlspecialchars($row['url'] ?? ''); ?></td>
+                                <td><?php echo htmlspecialchars($row['event_type'] ?? ''); ?></td>
+                                <td><?php echo htmlspecialchars($row['created_at'] ?? ''); ?></td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($usersList as $u): ?>
-                                <tr class="hover:bg-gray-50">
-                                    <td class="border border-gray-200 px-4 py-2"><?php echo htmlspecialchars($u['id']); ?></td>
-                                    <td class="border border-gray-200 px-4 py-2 font-semibold"><?php echo htmlspecialchars($u['username']); ?></td>
-                                    <td class="border border-gray-200 px-4 py-2">
-                                        <span class="px-2 py-1 rounded text-xs <?php echo ($u['role'] === 'super_admin') ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-200 text-gray-800'; ?>">
-                                            <?php echo htmlspecialchars(strtoupper($u['role'])); ?>
-                                        </span>
-                                    </td>
-                                    <td class="border border-gray-200 px-4 py-2 text-gray-500"><?php echo htmlspecialchars($u['created_at']); ?></td>
-                                    <td class="border border-gray-200 px-4 py-2 text-center">
-                                        <?php if ($u['id'] != $_SESSION['user_id']): ?>
-                                            <form method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');" style="display:inline;">
-                                                <input type="hidden" name="delete_user_id" value="<?php echo $u['id']; ?>">
-                                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded text-xs hover:bg-red-600">Delete</button>
-                                            </form>
-                                        <?php else: ?>
-                                            <span class="text-gray-400 italic text-xs">Current User</span>
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="5">No tracking data found yet.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
 
-        </div> </div> <script>
+        <div id="system" class="section-box">
+            <h3>3. System Data</h3>
+            <div class="chart-container" style="max-width: 300px;">
+                <canvas id="systemChart"></canvas>
+            </div>
+        </div>
+
+        <?php if ($_SESSION['role'] === 'super_admin'): ?>
+        <div id="admin-users" class="section-box" style="border-color: #d97706;">
+            <h3>User Management</h3>
+            <p>As a Super Admin, you have permission to view and revoke access for system users.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Created At</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($usersList as $u): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($u['id']); ?></td>
+                            <td><strong><?php echo htmlspecialchars($u['username']); ?></strong></td>
+                            <td><?php echo htmlspecialchars(strtoupper($u['role'])); ?></td>
+                            <td><?php echo htmlspecialchars($u['created_at']); ?></td>
+                            <td>
+                                <?php if ($u['id'] != $_SESSION['user_id']): ?>
+                                    <form method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');" style="display:inline;">
+                                        <input type="hidden" name="delete_user_id" value="<?php echo $u['id']; ?>">
+                                        <button type="submit">Delete</button>
+                                    </form>
+                                <?php else: ?>
+                                    <em>Current User</em>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php endif; ?>
+
+    </div>
+
+    <script>
         const labels = <?php echo json_encode($chartLabels); ?>;
         const dataCounts = <?php echo json_encode($chartCounts); ?>;
 
@@ -340,8 +328,8 @@ foreach ($sysData as $row) {
 
         function saveComment() {
             localStorage.setItem('performanceComment', commentBox.value);
-            statusText.classList.remove('hidden');
-            setTimeout(() => statusText.classList.add('hidden'), 2000);
+            statusText.style.display = 'inline';
+            setTimeout(() => statusText.style.display = 'none', 2000);
         }
     </script>
 </body>
