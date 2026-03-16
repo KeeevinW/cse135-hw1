@@ -46,13 +46,28 @@ if ($_SESSION['role'] === 'super_admin') {
     $usersList = $userStmt->fetchAll();
 }
 
-$pageStmt = $pdo->query("SELECT url, COUNT(*) as hits FROM raw_logs WHERE event_type IN ('page_load', 'initial_load') GROUP BY url ORDER BY hits DESC LIMIT 5");
+$pageStmt = $pdo->query("
+    SELECT 
+        SUBSTRING_INDEX(url, '?', 1) as base_url, 
+        COUNT(*) as hits 
+    FROM raw_logs 
+    WHERE event_type IN ('page_load', 'initial_load') 
+    GROUP BY base_url 
+    ORDER BY hits DESC 
+    LIMIT 5
+");
 $pageData = $pageStmt->fetchAll();
+
 $pageLabels = [];
 $pageCounts = [];
 foreach ($pageData as $row) {
-    // Clean up the URL so it fits nicely on a chart
-    $cleanUrl = parse_url($row['url'], PHP_URL_PATH) ?: 'Homepage';
+    $cleanUrl = parse_url($row['base_url'], PHP_URL_PATH) ?: 'Homepage';
+    
+    // Fallback if the path is just a slash
+    if ($cleanUrl === '/') {
+        $cleanUrl = 'Homepage';
+    }
+    
     $pageLabels[] = $cleanUrl;
     $pageCounts[] = $row['hits'];
 }
