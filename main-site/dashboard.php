@@ -30,7 +30,6 @@ try {
     die("Database connection failed: " . $e->getMessage());
 }
 
-// --- USER MANAGEMENT (Super Admin Only) ---
 $usersList = [];
 if ($_SESSION['role'] === 'super_admin') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user_id'])) {
@@ -47,7 +46,6 @@ if ($_SESSION['role'] === 'super_admin') {
     $usersList = $userStmt->fetchAll();
 }
 
-// --- BEHAVIOR DATA ---
 $stmt = $pdo->query("SELECT id, session_id, url, event_type, created_at FROM raw_logs ORDER BY created_at DESC LIMIT 50");
 $logs = $stmt->fetchAll();
 $chartStmt = $pdo->query("SELECT event_type, COUNT(*) as count FROM raw_logs GROUP BY event_type");
@@ -60,7 +58,6 @@ foreach ($chartData as $row) {
     $chartCounts[] = $row['count'];
 }
 
-// --- PERFORMANCE DATA ---
 $perfStmt = $pdo->query("
     SELECT 
         DATE_FORMAT(created_at, '%H:%i:%s') as time_label, 
@@ -79,7 +76,6 @@ foreach ($perfData as $row) {
     $perfTimes[] = $row['load_time'];
 }
 
-// --- SYSTEM DATA ---
 $sysStmt = $pdo->query("
     SELECT 
         JSON_UNQUOTE(JSON_EXTRACT(json_payload, '$.static.connectionType')) as conn_type, 
@@ -199,7 +195,10 @@ foreach ($sysData as $row) {
             </div>
         </div>
 
-        <?php if ($_SESSION['role'] === 'super_admin'): ?>
+        
+
+    </div>
+    <?php if ($_SESSION['role'] === 'super_admin'): ?>
         <div id="admin-users" class="section-box" style="border-color: #d97706;">
             <h3>User Management</h3>
             <p>As a Super Admin, you have permission to view and revoke access for system users.</p>
@@ -236,9 +235,7 @@ foreach ($sysData as $row) {
                 </tbody>
             </table>
         </div>
-        <?php endif; ?>
-
-    </div>
+    <?php endif; ?>
 
     <script>
         const labels = <?php echo json_encode($chartLabels); ?>;

@@ -101,11 +101,10 @@ How it was achieved: Standard Apache configuration (`ServerTokens`) only allows 
 ### 7. HW 5 - Final Project
 
 #### AI Usage & Value
-During this final phase, AI (Google Gemini) was utilized to assist in structuring the Role-Based Access Control (RBAC) logic, drafting the Tailwind CSS layout, and writing the SQL JSON-extraction queries for the analytics charts. 
-* **Value:** AI was highly valuable for rapidly prototyping the Tailwind layout without needing a full Node/PostCSS build pipeline, and for navigating the specifics of the `html2pdf.js` library. It acted as an effective pair-programmer for syntax and layout generation.
+AI (Google Gemini) was utilized to assist debugging, drafting the Tailwind CSS layout, and writing the SQL JSON-extraction queries for the analytics charts. 
+* **Value:** AI was highly valuable for rapidly prototyping the frontend layout and finding out which HTML tag is misplaced or missing. It acted as an effective pair-programmer for syntax and layout generation. However, it still makes mistakes and needs human to verify its responses.
 
 #### Future Roadmap (Time Permitting)
 If given more time, I would implement the following:
 1. Currently, the analyst comments is stored in `localStorage`. If I have more time, I will transition it from `localStorage` to a dedicated MySQL table with author attribution and timestamps.
-2. **User Management Panel:** Build a dedicated UI for the `super_admin` to create, edit, and revoke user access dynamically without touching the database directly.
-3. **Date Range Filtering:** Add interactive date pickers to the dashboard so Analysts can filter the Chart.js visualizations by specific timeframes (e.g., "Last 7 Days" or "Last 30 Days").
+2. Add interactive date pickers to the dashboard so Analysts can filter the Chart.js visualizations by specific timeframes (e.g., "Last 7 Days" or "Last 30 Days").

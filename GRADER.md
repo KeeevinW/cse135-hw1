@@ -36,7 +36,5 @@ To evaluate the project, please follow these steps:
 
 In the spirit of accountability, here are a few areas of the architecture that could be improved or that have known limitations:
 
-* **Tailwind CSS via CDN:** To achieve a visually organized and modern UI, the dashboard uses the Tailwind Play CDN. While excellent for prototyping, this is not a production-ready architectural choice. In a real-world scenario, this adds network latency and should be replaced with a compiled CSS file using a build step (Node.js/PostCSS).
-* **Client-Side PDF Generation:** The PDF export relies heavily on the user's browser to render the canvas elements via `html2pdf.js`. While this bypasses the issue of server-side PHP libraries failing to capture JavaScript charts, it means the quality and formatting of the PDF can occasionally vary depending on the client's screen size or browser engine.
-* **Analyst Comments Architecture:** The Analyst Comment saving mechanism utilizes browser `localStorage` rather than a MySQL backend. This means comments are device-specific and will not globally sync for other analysts viewing the dashboard.
-* **Session Security:** While the authentication system properly hashes passwords and checks roles, the session management is relatively basic. To be fully secure, it should implement session ID regeneration upon login and utilize CSRF tokens on forms to prevent cross-site request forgery.
+* The PDF export relies heavily on the user's browser to render the canvas elements via `html2pdf.js`. While this bypasses the issue of server-side PHP libraries failing to capture JavaScript charts, it means the quality and formatting of the PDF can occasionally vary depending on the client's screen size or browser engine.
+* The Analyst Comment saving mechanism utilizes browser `localStorage` rather than a MySQL backend. This means comments are device-specific and will not globally sync for other analysts viewing the dashboard.
